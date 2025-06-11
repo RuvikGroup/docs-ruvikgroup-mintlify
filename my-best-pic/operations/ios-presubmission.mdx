@@ -27,10 +27,53 @@ This checklist outlines the critical housekeeping tasks that must be completed b
     
     **Purpose**: Disables people photos feature for App Store compliance
   </Step>
+  <Step title="Update dynamic_onboarding Parameter">
+    Modify the `dynamic_onboarding` JSON configuration to remove Date of Birth and Gender fields
+    
+    **Configuration**: Replace the current JSON with the App Store compliant version (see code block below)
+  </Step>
   <Step title="Publish Configuration">
     Publish the remote config changes to production
   </Step>
 </Steps>
+
+#### Dynamic Onboarding Configuration for App Store Submission
+
+Replace the `dynamic_onboarding` parameter with this configuration that removes Date of Birth and Gender fields:
+
+```json
+{
+  "title": "Complete Registration",
+  "formType": "multi",
+  "step": [
+    {
+      "type": "form",
+      "title": "Complete Registration",
+      "formFields": []
+    },
+    {
+      "type": "widget",
+      "route": "/onboarding-otp"
+    },
+    {
+      "type": "widget",
+      "route": "/onboarding-new-category"
+    },
+    {
+      "type": "widget",
+      "route": "/onboarding-new-image"
+    },
+    {
+      "type": "widget",
+      "route": "/onboarding-package-selection"
+    }
+  ]
+}
+```
+
+<Warning>
+**Important**: The `formFields` array is empty to remove Date of Birth and Gender collection during App Store review.
+</Warning>
 
 ### 2. Category Management
 
@@ -59,9 +102,11 @@ Before final submission, verify all changes are active:
 
 <Accordion title="Firebase Remote Config Verification">
 - [ ] `show_people_photos` parameter is set to `false`
+- [ ] `dynamic_onboarding` parameter updated with empty `formFields` array
 - [ ] Configuration is published to production environment
 - [ ] App reflects the remote config changes (test on device)
 - [ ] People photos feature is not accessible in app
+- [ ] Date of Birth and Gender fields are not shown in onboarding
 </Accordion>
 
 <Accordion title="Category Verification">

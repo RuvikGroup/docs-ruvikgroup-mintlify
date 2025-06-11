@@ -33,10 +33,120 @@ Wait **at least 24-48 hours** after App Store approval before making these chang
     
     **Purpose**: Re-enables people photos feature for users
   </Step>
+  <Step title="Restore dynamic_onboarding Parameter">
+    Restore the `dynamic_onboarding` JSON configuration to include Date of Birth and Gender fields
+    
+    **Configuration**: Replace with the full onboarding configuration (see code block below)
+  </Step>
   <Step title="Publish Configuration">
     Publish the remote config changes to production
   </Step>
 </Steps>
+
+#### Full Dynamic Onboarding Configuration (Post-Approval)
+
+Restore the `dynamic_onboarding` parameter to this complete configuration that includes Date of Birth and Gender fields:
+
+```json
+{
+  "title": "Complete Registration",
+  "formType": "multi",
+  "step": [
+    {
+      "type": "form",
+      "title": "Complete Registration",
+      "formFields": [
+        {
+          "elementType": "input",
+          "apiMapping": "user",
+          "elementConfig": {
+            "type": "date",
+            "name": "dob",
+            "label": "Date of Birth",
+            "placeholder": "Enter your date of birth...",
+            "class": "form-control",
+            "resetIcon": false,
+            "pickDateFromCalender": false,
+            "dialogTitle": "confirmDobTitle",
+            "dialogDescription": "confirmDobDescription",
+            "dialogConfirmText": "confirmDobConfirmButton",
+            "dialogCancelText": "confirmDobCancelButton",
+            "dialogCloseText": "confirmDobCloseButton",
+            "isAgeDateDialog": true
+          },
+          "value": "",
+          "validation": {
+            "required": true,
+            "isReadOnly": false,
+            "isDisabled": false,
+            "minAge": 18,
+            "showDateConfirmationDialog": true,
+            "errorMessage": {
+              "required": "You need to select your date of birth",
+              "minAge": "You need to be at least 18 years old"
+            }
+          },
+          "valid": true
+        },
+        {
+          "elementType": "select",
+          "apiMapping": "user",
+          "elementConfig": {
+            "name": "gender",
+            "label": "I am a...",
+            "placeholder": "Select your gender...",
+            "enableLabel": true,
+            "isShowBottomSheet": false,
+            "buttonHead": "selectGender",
+            "class": "form-control",
+            "options": [
+              {
+                "value": "Male",
+                "displayValue": "Male"
+              },
+              {
+                "value": "Female",
+                "displayValue": "Female"
+              }
+            ],
+            "isMulitpleSelect": false
+          },
+          "value": "",
+          "validation": {
+            "required": true,
+            "isReadOnly": false,
+            "isDisabled": false,
+            "errorMessage": {
+              "required": "You need to select your gender"
+            }
+          },
+          "valid": true
+        }
+      ]
+    },
+    {
+      "type": "widget",
+      "route": "/onboarding-otp"
+    },
+    {
+      "type": "widget",
+      "route": "/onboarding-new-category"
+    },
+    {
+      "type": "widget",
+      "route": "/onboarding-new-image"
+    },
+    {
+      "type": "widget",
+      "route": "/onboarding-package-selection"
+    }
+  ]
+}
+```
+
+<Info>
+**Note**: This restores the full user onboarding experience including Date of Birth and Gender collection.
+</Info>
 
 ### 2. Category Management Restoration
 
@@ -65,9 +175,12 @@ After completing restoration tasks, verify all changes are working correctly:
 
 <Accordion title="Firebase Remote Config Verification">
 - [ ] `show_people_photos` parameter is set to `true`
+- [ ] `dynamic_onboarding` parameter restored with complete `formFields` array
 - [ ] Configuration is published to production environment
 - [ ] App reflects the remote config changes (test on device)
 - [ ] People photos feature is accessible and working
+- [ ] Date of Birth and Gender fields are visible in onboarding
+- [ ] Onboarding form validation works correctly
 - [ ] Feature functions as expected without issues
 </Accordion>
 
