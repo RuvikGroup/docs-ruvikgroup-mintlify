@@ -1,0 +1,124 @@
+---
+title: Repository Naming Schema
+description: "Repository naming standards for GitHub organization"
+---
+
+# Repository Naming Schema
+
+## Table of Contents
+1. [Introduction](#introduction)
+2. [General Rules](#general-rules)
+3. [Package Repositories](#package-repositories)
+4. [Application Repositories](#application-repositories)
+5. [Documentation Repositories](#documentation-repositories)
+6. [Infrastructure and DevOps Repositories](#infrastructure-and-devops-repositories)
+7. [Best Practices](#best-practices)
+8. [Examples](#examples)
+9. [Handling Exceptions](#handling-exceptions)
+10. [Updating Existing Repositories](#updating-existing-repositories)
+
+## Introduction
+
+This document outlines the naming conventions for repositories within the Ruvik Group GitHub organization. Consistent naming helps maintain organization, improves searchability, and clarifies the purpose of each repository.
+
+## General Rules
+
+- Use all lowercase letters
+- Use hyphens (-) to separate words
+- Avoid abbreviations unless widely recognized
+- Be concise but descriptive
+
+## Package Repositories
+
+### Format
+`pkg-[name]-[platform]`
+
+### Rules
+- Use the `pkg-` prefix to identify package repositories
+- `[name]` should concisely describe the package's primary function
+- `[platform]` specifies the technology or framework (e.g., flutter, php)
+
+### Examples
+- pkg-auth-flutter
+- pkg-onboarding-flutter
+- pkg-analytics-flutter
+- pkg-ui-flutter
+
+## Application Repositories
+
+### Format
+`app-[name]-[component]`
+
+### Rules
+- Use the `app-` prefix to identify application repositories
+- `[name]` should be the application's name or a short identifier
+- `[component]` specifies whether it's frontend or backend (e.g., flutter, laravel)
+
+### Examples
+- app-mybestpic-flutter
+- app-mybestpic-laravel
+
+## Documentation Repositories
+
+### Format
+`docs-[subject]`
+
+### Rules
+- Use the `docs-` prefix to identify documentation repositories
+- `[subject]` should concisely describe the documentation content
+
+### Examples
+- docs-organization
+- docs-api
+- docs-style-guide
+
+## Infrastructure and DevOps Repositories
+
+### Format
+`infra-[purpose]`
+
+### Rules
+- Use the `infra-` prefix to identify infrastructure-related repositories
+- `[purpose]` should describe the specific infrastructure or DevOps function
+
+### Examples
+- infra-ci-cd
+- infra-monitoring
+- infra-deployment
+
+## Best Practices
+
+1. Consistency: Always follow the naming schema for new repositories
+2. Descriptiveness: Choose names that clearly convey the repository's purpose
+3. Brevity: Keep names as short as possible while maintaining clarity
+4. Avoid Redundancy: Don't repeat information that's already in the organization name or prefix
+5. Future-proofing: Consider how the name might accommodate future changes or expansions
+
+## Examples
+
+Here are some examples of full GitHub URLs using this naming schema:
+
+- https://github.com/Ruvik/pkg-auth-flutter
+- https://github.com/Ruvik/app-mybestpic-flutter
+- https://github.com/Ruvik/docs-api
+- https://github.com/Ruvik/infra-ci-cd
+
+## Handling Exceptions
+
+While consistency is important, there may be cases where strict adherence to the naming schema is impractical. In such cases:
+
+1. Consult with the team lead or repository administrator
+2. Document the reason for the exception
+3. Try to stay as close to the schema as possible
+
+## Updating Existing Repositories
+
+When renaming existing repositories to comply with this schema:
+
+1. Create a plan for the transition
+2. Update all references in code and documentation
+3. Set up redirects from old names if possible
+4. Inform all team members of the changes
+5. Update any CI/CD pipelines or scripts that reference the repository names
+
+Remember, consistency in your repository names will greatly enhance the organization and navigability of your GitHub workspace.

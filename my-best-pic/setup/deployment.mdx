@@ -1,0 +1,130 @@
+---
+title: Deployment
+description: "Deployment procedures and guidelines for My Best Pic"
+---
+
+# Deployment
+
+This page covers deployment procedures for My Best Pic, including special considerations for iOS App Store submissions.
+
+## iOS App Store Deployment
+
+### Pre-Submission Requirements
+
+<Warning>
+**CRITICAL**: Before submitting to the iOS App Store, you MUST complete the pre-submission checklist to ensure App Store compliance.
+</Warning>
+
+<Card title="iOS Pre-Submission Checklist" icon="list-check" href="/my-best-pic/operations/ios-presubmission">
+  Complete all required configuration changes before App Store submission
+</Card>
+
+**Key pre-submission tasks:**
+- Set Firebase Remote Config `show_people_photos = false`
+- Disable Dating and Business categories
+- Verify all changes are applied and tested
+
+### Post-Approval Restoration
+
+<Info>
+After receiving iOS App Store approval, restore full app functionality using the post-approval guide.
+</Info>
+
+<Card title="iOS Post-Approval Restoration" icon="refresh" href="/my-best-pic/operations/ios-postapproval">
+  Restore normal app functionality after App Store approval
+</Card>
+
+**Key restoration tasks:**
+- Set Firebase Remote Config `show_people_photos = true`
+- Re-enable Dating and Business categories
+- Monitor app performance and user feedback
+
+## CI/CD Pipeline
+
+### Frontend Deployment (Codemagic)
+<Note>
+Detailed Codemagic configuration and Flutter deployment procedures will be documented here as they are established.
+</Note>
+
+**Current process:**
+- Automated builds triggered by Git commits
+- iOS and Android app builds
+- App Store Connect and Google Play Store deployment
+
+### Backend Deployment (Chipper CI)
+<Note>
+Detailed Chipper CI configuration and Laravel deployment procedures will be documented here as they are established.
+</Note>
+
+**Current process:**
+- Laravel backend deployment
+- Database migration execution
+- Server configuration updates
+
+## Environment Management
+
+<Note>
+Environment-specific deployment configurations will be documented here as they are established.
+</Note>
+
+**Coming soon:**
+- Development environment deployment
+- Staging environment procedures
+- Production deployment guidelines
+- Environment promotion processes
+
+## Deployment Checklist
+
+### Pre-Deployment
+- [ ] Code review completed and approved
+- [ ] All tests passing
+- [ ] Environment variables configured
+- [ ] Database migrations ready (if applicable)
+
+### iOS-Specific Pre-Deployment
+- [ ] [Pre-submission checklist](/my-best-pic/operations/ios-presubmission) completed
+- [ ] Firebase Remote Config updated
+- [ ] Categories properly configured
+- [ ] App tested with submission configuration
+
+### Post-Deployment
+- [ ] Deployment verification completed
+- [ ] Health checks passing
+- [ ] Monitoring alerts configured
+
+### iOS-Specific Post-Approval
+- [ ] [Post-approval restoration](/my-best-pic/operations/ios-postapproval) completed
+- [ ] Features restored and verified
+- [ ] User communication sent (if applicable)
+
+## Rollback Procedures
+
+<Note>
+Rollback and disaster recovery procedures will be documented here as they are established.
+</Note>
+
+**Coming soon:**
+- Automated rollback procedures
+- Manual rollback steps
+- Database rollback considerations
+- Communication protocols for rollbacks
+
+## Monitoring & Validation
+
+<Note>
+Post-deployment monitoring and validation procedures will be documented here as they are established.
+</Note>
+
+**Coming soon:**
+- Health check endpoints
+- Performance monitoring
+- Error rate monitoring
+- User experience validation
+
+---
+
+<Tip>
+For detailed infrastructure information including deployment architecture, see the [Infrastructure Documentation](/my-best-pic/architecture/infrastructure).
+</Tip>
+
+*Contact the development team to contribute detailed deployment procedures and CI/CD configuration information.*

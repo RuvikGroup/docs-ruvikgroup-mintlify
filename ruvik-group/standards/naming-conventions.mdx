@@ -1,0 +1,216 @@
+---
+title: Naming Conventions
+description: "Standard naming conventions across all Ruvik Group projects"
+---
+
+# Naming Conventions
+
+Consistent naming conventions across all Ruvik Group projects ensure code readability and maintainability.
+
+## General Principles
+
+1. **Be Descriptive**: Names should clearly indicate purpose
+2. **Be Consistent**: Follow the same pattern throughout the codebase
+3. **Avoid Abbreviations**: Use full words unless widely recognized (e.g., URL, API)
+4. **Use Domain Language**: Match business terminology
+
+## Code Conventions
+
+### JavaScript/TypeScript
+
+#### Variables & Functions
+```typescript
+// Variables: camelCase
+const userProfile = {};
+const isActive = true;
+
+// Functions: camelCase, verb prefixes
+function getUserById(id: string) {}
+function calculateTotal(items: Item[]) {}
+function hasPermission(user: User, action: string) {}
+```
+
+#### Classes & Interfaces
+```typescript
+// Classes: PascalCase
+class UserService {}
+class PhotoUploader {}
+
+// Interfaces: PascalCase, optionally prefixed with 'I'
+interface User {}
+interface IPhotoMetadata {} // optional 'I' prefix
+```
+
+#### Constants & Enums
+```typescript
+// Constants: UPPER_SNAKE_CASE
+const MAX_FILE_SIZE = 10485760;
+const API_TIMEOUT = 30000;
+
+// Enums: PascalCase for name, UPPER_SNAKE_CASE for values
+enum UserRole {
+  ADMIN = 'ADMIN',
+  USER = 'USER',
+  GUEST = 'GUEST'
+}
+```
+
+### Database
+
+#### Tables
+- Use **snake_case**
+- Plural form for collections
+- Singular for join tables
+
+```sql
+-- Collections
+CREATE TABLE users (...);
+CREATE TABLE photos (...);
+CREATE TABLE categories (...);
+
+-- Join tables
+CREATE TABLE user_photo (...);
+CREATE TABLE photo_category (...);
+```
+
+#### Columns
+- Use **snake_case**
+- Be descriptive but concise
+- Standard suffixes:
+  - `_id` for foreign keys
+  - `_at` for timestamps
+  - `_count` for counters
+  - `is_` prefix for booleans
+
+```sql
+CREATE TABLE photos (
+  id UUID PRIMARY KEY,
+  user_id UUID REFERENCES users(id),
+  category_id UUID REFERENCES categories(id),
+  file_name VARCHAR(255),
+  file_size INTEGER,
+  is_public BOOLEAN DEFAULT false,
+  created_at TIMESTAMP,
+  updated_at TIMESTAMP,
+  view_count INTEGER DEFAULT 0
+);
+```
+
+### API Endpoints
+
+#### RESTful Routes
+- Use **kebab-case**
+- Plural for collections
+- Nest resources logically
+
+```
+GET    /api/users
+GET    /api/users/:id
+POST   /api/users
+PUT    /api/users/:id
+DELETE /api/users/:id
+
+GET    /api/users/:id/photos
+POST   /api/photos/batch-upload
+GET    /api/photo-categories
+```
+
+#### GraphQL
+```graphql
+# Types: PascalCase
+type User {
+  id: ID!
+  email: String!
+  photos: [Photo!]!
+}
+
+# Queries/Mutations: camelCase
+type Query {
+  getUser(id: ID!): User
+  listPhotos(filter: PhotoFilter): [Photo!]!
+}
+
+type Mutation {
+  createUser(input: CreateUserInput!): User!
+  uploadPhoto(input: UploadPhotoInput!): Photo!
+}
+```
+
+## File & Folder Structure
+
+### Project Structure
+```
+my-best-pic/
+├── src/
+│   ├── components/        # React components
+│   ├── services/          # Business logic
+│   ├── utils/             # Utility functions
+│   ├── types/             # TypeScript types
+│   ├── hooks/             # React hooks
+│   └── api/               # API routes
+├── tests/
+├── docs/
+└── scripts/
+```
+
+### File Naming
+- **Components**: PascalCase - `UserProfile.tsx`, `PhotoGrid.tsx`
+- **Utilities**: camelCase - `formatDate.ts`, `validateEmail.ts`
+- **Tests**: Match source with `.test` or `.spec` - `UserProfile.test.tsx`
+- **Configs**: kebab-case - `jest.config.js`, `docker-compose.yml`
+
+## Git Conventions
+
+### Branch Names
+```bash
+# Format: type/description
+feature/user-authentication
+bugfix/photo-upload-error
+hotfix/security-patch
+chore/update-dependencies
+```
+
+### Commit Messages
+Follow conventional commits:
+```bash
+feat: add user photo upload
+fix: resolve memory leak in photo processor
+docs: update API documentation
+chore: upgrade to Node 18
+refactor: simplify authentication logic
+```
+
+## Environment Variables
+
+- Use **UPPER_SNAKE_CASE**
+- Prefix with service name for clarity
+- Group related variables
+
+```bash
+# Database
+DATABASE_URL=postgresql://...
+DATABASE_POOL_SIZE=10
+
+# Redis
+REDIS_URL=redis://...
+REDIS_CACHE_TTL=3600
+
+# My Best Pic specific
+MYBESTPIC_STORAGE_BUCKET=photos
+MYBESTPIC_MAX_UPLOAD_SIZE=10485760
+MYBESTPIC_ADMIN_EMAIL=admin@mybestpic.com
+
+# Third-party services
+AWS_ACCESS_KEY_ID=...
+STRIPE_SECRET_KEY=...
+```
+
+## Domain-Specific Terms
+
+Maintain consistency with business terminology:
+
+- **Photo** (not image, picture)
+- **Category** (not folder, album)
+- **Subject** (person/object in photo)
+- **Depiction** (how subject appears)
+- **Credit** (attribution info)

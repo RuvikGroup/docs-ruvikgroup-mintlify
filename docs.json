@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "Ruvik Group Internal Docs",
   "colors": {
     "primary": "#16A34A",
     "light": "#07C983",
@@ -11,45 +11,79 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "Overview",
         "groups": [
           {
-            "group": "Get Started",
+            "group": "General",
             "pages": [
-              "index",
-              "quickstart",
-              "development"
+              "ruvik-group/overview/documentation-index",
+              "ruvik-group/overview/team-structure",
+              "ruvik-group/overview/infrastructure"
             ]
           },
           {
-            "group": "Essentials",
+            "group": "Naming Standards",
             "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/settings",
-              "essentials/navigation",
-              "essentials/reusable-snippets"
+              "ruvik-group/standards/naming-conventions",
+              "ruvik-group/standards/repository-naming",
+              "ruvik-group/standards/branch-naming",
+              "ruvik-group/standards/product-naming"
+            ]
+          },
+          {
+            "group": "Development Standards",
+            "pages": [
+              "ruvik-group/standards/git-practices",
+              "ruvik-group/standards/security-guidelines"
+            ]
+          },
+          {
+            "group": "Templates",
+            "pages": [
+              "ruvik-group/templates/readme-template",
+              "ruvik-group/templates/pull-request-template",
+              "ruvik-group/templates/issue-template"
             ]
           }
         ]
       },
       {
-        "tab": "API Reference",
+        "tab": "My Best Pic",
         "groups": [
           {
-            "group": "API Documentation",
+            "group": "Setup & Deployment",
             "pages": [
-              "api-reference/introduction"
+              "my-best-pic/setup/local-development",
+              "my-best-pic/setup/environment-variables",
+              "my-best-pic/setup/database-setup",
+              "my-best-pic/setup/deployment"
             ]
           },
           {
-            "group": "Endpoint Examples",
+            "group": "Architecture",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              "my-best-pic/architecture/overview",
+              "my-best-pic/architecture/infrastructure"
+            ]
+          },
+          {
+            "group": "Development",
+            "pages": [
+              "my-best-pic/development/coding-standards",
+              "my-best-pic/development/git-workflow",
+              "my-best-pic/development/testing",
+              "my-best-pic/development/debugging"
+            ]
+          },
+          {
+            "group": "Operations",
+            "pages": [
+              "my-best-pic/operations/ios-presubmission",
+              "my-best-pic/operations/ios-postapproval",
+              "my-best-pic/operations/monitoring",
+              "my-best-pic/operations/backup-restore",
+              "my-best-pic/operations/troubleshooting",
+              "my-best-pic/operations/maintenance"
             ]
           }
         ]

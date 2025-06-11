@@ -1,0 +1,315 @@
+---
+title: Git Practices
+description: "Version control workflows and best practices for all Ruvik Group projects"
+---
+
+# Git Practices
+
+This guide outlines our Git workflow standards and best practices across all Ruvik Group repositories.
+
+## Workflow Overview
+
+We follow a modified Git Flow approach optimized for continuous deployment.
+
+### Main Branches
+
+1. **`main`** (or `master`)
+   - Production-ready code
+   - Protected branch - requires PR approval
+   - Automatically deploys to production
+
+2. **`develop`**
+   - Integration branch for features
+   - Next release candidate
+   - Automatically deploys to staging
+
+3. **`staging`** (optional)
+   - Pre-production testing
+   - Mirror of production environment
+
+## Branch Strategy
+
+### Feature Development
+```bash
+# Create feature branch from develop
+git checkout develop
+git pull origin develop
+git checkout -b feature/123-user-authentication
+
+# Work on feature
+git add .
+git commit -m "feat(auth): implement JWT authentication"
+
+# Push and create PR
+git push -u origin feature/123-user-authentication
+```
+
+### Bug Fixes
+```bash
+# For non-critical bugs (from develop)
+git checkout -b bugfix/456-fix-login-error
+
+# For critical production bugs (from main)
+git checkout -b hotfix/789-security-patch
+```
+
+## Commit Standards
+
+### Commit Message Format
+We follow [Conventional Commits](https://www.conventionalcommits.org/):
+
+```
+<type>(<scope>): <subject>
+
+<body>
+
+<footer>
+```
+
+### Types
+- **feat**: New feature
+- **fix**: Bug fix
+- **docs**: Documentation changes
+- **style**: Code style changes (formatting, missing semicolons, etc)
+- **refactor**: Code refactoring without changing functionality
+- **perf**: Performance improvements
+- **test**: Adding or updating tests
+- **chore**: Maintenance tasks (updating dependencies, etc)
+- **ci**: CI/CD configuration changes
+
+### Examples
+```bash
+# Feature
+git commit -m "feat(payment): add Stripe payment integration"
+
+# Bug fix
+git commit -m "fix(upload): resolve memory leak in image processor"
+
+# Breaking change
+git commit -m "feat(api): change authentication method
+
+BREAKING CHANGE: JWT tokens now required for all API endpoints"
+
+# Multiple line commit
+git commit -m "refactor(user): simplify user service architecture
+
+- Extract validation logic to separate module
+- Implement dependency injection
+- Add comprehensive error handling"
+```
+
+## Pull Request Process
+
+### Before Creating PR
+
+1. **Update your branch**
+   ```bash
+   git checkout develop
+   git pull origin develop
+   git checkout feature/your-branch
+   git rebase develop
+   ```
+
+2. **Run tests locally**
+   ```bash
+   npm test
+   npm run lint
+   ```
+
+3. **Self-review changes**
+   ```bash
+   git diff develop...HEAD
+   ```
+
+### PR Guidelines
+
+1. **Use PR template** (see [Pull Request Template](/ruvik-group/templates/pull-request-template))
+2. **Link related issues** using keywords: `Closes #123`, `Fixes #456`
+3. **Keep PRs focused** - one feature/fix per PR
+4. **Add reviewers** - at least one code owner
+5. **Update documentation** if needed
+
+### Code Review Process
+
+#### For Authors
+- Respond to all comments
+- Push fixes as new commits (don't force-push during review)
+- Request re-review after addressing feedback
+- Squash commits before merging if needed
+
+#### For Reviewers
+- Review within 24 hours
+- Provide constructive feedback
+- Approve only when all concerns are addressed
+- Use GitHub's review features (approve/request changes)
+
+## Merging Strategy
+
+### Feature Branches → Develop
+- Use **Squash and Merge** for clean history
+- Ensure PR title follows commit conventions
+
+### Develop → Main
+- Use **Create a Merge Commit** to preserve history
+- Tag releases appropriately
+
+### Hotfixes → Main
+- Use **Create a Merge Commit**
+- Cherry-pick or merge back to develop
+
+## Git Configuration
+
+### Required Setup
+```bash
+# Set your identity
+git config --global user.name "Your Name"
+git config --global user.email "your.email@ruvikgroup.com"
+
+# Set default branch name
+git config --global init.defaultBranch main
+
+# Enable auto-stash on rebase
+git config --global rebase.autoStash true
+
+# Set pull strategy
+git config --global pull.rebase true
+```
+
+### Recommended Aliases
+```bash
+# Add to ~/.gitconfig
+[alias]
+    st = status
+    co = checkout
+    br = branch
+    cm = commit -m
+    unstage = reset HEAD --
+    last = log -1 HEAD
+    visual = !gitk
+    lg = log --oneline --graph --decorate
+```
+
+## Security Practices
+
+<Warning>
+  Never commit sensitive information like passwords, API keys, or tokens.
+</Warning>
+
+### Pre-commit Checks
+
+1. **Install pre-commit hooks**
+   ```bash
+   npm install --save-dev husky
+   npx husky install
+   ```
+
+2. **Add secret scanning**
+   ```bash
+   # .husky/pre-commit
+   npm run lint
+   npm run test:unit
+   git secrets --scan
+   ```
+
+### If You Accidentally Commit Secrets
+
+1. **Don't push!** If not pushed yet:
+   ```bash
+   git reset --soft HEAD~1
+   # Remove the secret and recommit
+   ```
+
+2. **If already pushed**:
+   - Immediately rotate the exposed credential
+   - Contact security@ruvikgroup.com
+   - Use `git filter-branch` or BFG Repo-Cleaner
+
+## Common Workflows
+
+### Syncing Fork
+```bash
+# Add upstream remote
+git remote add upstream https://github.com/ruvikgroup/original-repo.git
+
+# Sync with upstream
+git fetch upstream
+git checkout main
+git merge upstream/main
+git push origin main
+```
+
+### Resolving Conflicts
+```bash
+# During rebase
+git rebase develop
+# Fix conflicts in files
+git add .
+git rebase --continue
+
+# During merge
+git merge develop
+# Fix conflicts
+git add .
+git commit
+```
+
+### Undoing Changes
+```bash
+# Undo last commit (keep changes)
+git reset --soft HEAD~1
+
+# Undo last commit (discard changes)
+git reset --hard HEAD~1
+
+# Revert a merged PR
+git revert -m 1 <merge-commit-hash>
+```
+
+## Best Practices
+
+1. **Commit Often**: Make small, logical commits
+2. **Pull Regularly**: Stay updated with the base branch
+3. **Branch Naming**: Follow our [branch naming convention](/ruvik-group/standards/branch-naming)
+4. **Clean History**: Use interactive rebase to clean up before PR
+5. **No Force Push**: Never force push to shared branches
+6. **Tag Releases**: Use semantic versioning for tags
+
+## Git LFS (Large File Storage)
+
+For large files (>100MB):
+
+```bash
+# Install Git LFS
+git lfs install
+
+# Track file types
+git lfs track "*.psd"
+git lfs track "*.zip"
+
+# Add .gitattributes
+git add .gitattributes
+git commit -m "chore: configure Git LFS"
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Detached HEAD**
+   ```bash
+   git checkout main
+   ```
+
+2. **Merge conflicts in package-lock.json**
+   ```bash
+   rm package-lock.json
+   npm install
+   git add package-lock.json
+   ```
+
+3. **Wrong branch base**
+   ```bash
+   git rebase --onto develop wrong-base HEAD
+   ```
+
+For more help, consult the team lead or check our [troubleshooting guide](/ruvik-group/troubleshooting/git-issues).

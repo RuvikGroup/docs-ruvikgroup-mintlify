@@ -1,0 +1,161 @@
+---
+title: Product Naming Convention
+description: "App store product naming standards for Google Play and Apple App Store"
+---
+
+# Product Naming Convention
+
+## Table of Contents
+1. [Introduction](#introduction)
+2. [Subscription Products](#subscription-products)
+3. [One-Time Purchase Products](#one-time-purchase-products)
+4. [Duration Keywords](#duration-keywords)
+5. [Examples](#examples)
+6. [Duration Calculations](#duration-calculations)
+7. [Metadata](#metadata)
+8. [Best Practices](#best-practices)
+9. [Notes for Developers](#notes-for-developers)
+
+## Introduction
+
+This document outlines the comprehensive naming convention for products in the Google Play Store and Apple App Store for Ruvik Group applications. Consistent naming is crucial for proper processing of purchases and subscriptions within our applications and ensures smooth integration with our backend services.
+
+## Subscription Products
+
+### Format
+`premium_subscription_[duration]`
+
+- `premium_subscription`: Prefix to identify subscription products
+- `[duration]`: Time unit (see [Duration Keywords](#duration-keywords))
+
+## One-Time Purchase Products
+
+### Format
+`onetime_[credits]`
+
+- `onetime`: Keyword to identify one-time purchases
+- `[credits]`: Number of credits
+
+All numbers in here would be converted to a credit amount, so use only *alpha characters* for your description
+
+DO NOT: 1_time_1300 == 11300
+DO: onetime_1300
+DO: stripe_onetime_300
+
+## Duration Keywords
+
+The following keywords are recognized for subscription durations:
+
+- `daily` or `[number]_days`
+- `weekly` or `[number]_weeks`
+- `biweekly`
+- `monthly`
+- `[number]_months`
+- `quarterly`
+- `biannual` or `semiannual`
+- `annual`
+
+## Examples
+
+### Subscription Products
+
+1. Daily subscription:
+   - `premium_subscription_daily`
+   - `premium_subscription_1_day`
+
+2. Multi-day subscription:
+   - `premium_subscription_3_days`
+   - `premium_subscription_5_days`
+
+3. Weekly subscription:
+   - `premium_subscription_weekly`
+   - `premium_subscription_1_week`
+
+4. Multi-week subscription:
+   - `premium_subscription_2_weeks`
+   - `premium_subscription_3_weeks`
+
+5. Biweekly subscription:
+   - `premium_subscription_biweekly`
+
+6. Monthly subscription:
+   - `premium_subscription_monthly`
+   - `premium_subscription_1_month`
+
+7. Multi-month subscription:
+   - `premium_subscription_2_months`
+   - `premium_subscription_3_months`
+   - `premium_subscription_6_months`
+
+8. Quarterly subscription:
+   - `premium_subscription_quarterly`
+   - `premium_subscription_3_months`
+
+9. Biannual/Semiannual subscription:
+   - `premium_subscription_biannual`
+   - `premium_subscription_semiannual`
+   - `premium_subscription_6_months`
+
+10. Annual subscription:
+    - `premium_subscription_annual`
+    - `premium_subscription_12_months`
+
+### One-Time Purchase Products
+
+11. One-time purchase of 50 credits:
+    - `onetime_50`
+
+12. One-time purchase of 100 credits:
+    - `onetime_100`
+
+## Duration Calculations
+
+The following table shows how different duration keywords are interpreted in terms of days:
+
+| Keyword | Days Calculation |
+|---------|------------------|
+| 'days' | Exact number of days specified (e.g., '3_days' = 3 days) |
+| 'weeks' | Number of weeks * 7 (e.g., '2_weeks' = 14 days) |
+| 'weekly' | 7 days |
+| 'biweekly' | 14 days |
+| 'monthly' | 30 days |
+| 'months' | Number of months * 30 (e.g., '3_months' = 90 days) |
+| 'quarterly' | 90 days |
+| 'biannual' or 'semiannual' | 180 days |
+| 'annual' | 365 days |
+
+Note: If no number is specified before 'days', 'weeks', or 'months', the system defaults to 7 days for 'days' and 'weeks', and 30 days for 'months'.
+
+## Metadata
+
+For subscription products, the number of credits associated with the subscription is stored in the product's metadata, not in the product ID itself. This allows for more flexibility in managing credit allocations without changing the product ID.
+
+### Metadata Format
+```json
+{
+  "credits": 100
+}
+```
+
+## Best Practices
+
+1. Use lowercase for all product IDs.
+2. Use underscores (`_`) to separate words in the product ID.
+3. Be consistent with plural/singular forms (e.g., always use `months` for multiple months, `monthly` for a single month).
+4. Always prefix subscription products with `premium_subscription_`.
+5. Always prefix one-time purchases with `onetime_`.
+6. Store the number of credits for subscriptions in the product's metadata, not in the product ID.
+7. When creating new products, refer to this document to ensure consistency.
+8. If a new duration or product type is needed, update this document and the corresponding code in the `CreditWebhookService` class.
+9. When specifying durations, prefer using singular forms for single units (e.g., 'day', 'week', 'month') and plural forms for multiple units (e.g., 'days', 'weeks', 'months').
+10. For durations that have specific keywords (like 'biweekly', 'quarterly', 'annual'), use these keywords instead of spelling out the duration in days or months.
+
+## Notes for Developers
+
+- The `CreditWebhookService` class processes these product IDs and retrieves credit information from metadata for subscriptions.
+- The `getDurationDays` and `getDistributionInterval` methods in `CreditWebhookService` rely on these naming conventions to determine subscription length and distribution frequency.
+- Ensure that the metadata for subscription products is correctly set and retrieved when processing purchases.
+- The `extractNumberBeforeKeyword` method in `CreditWebhookService` is used to parse numeric values from product IDs. Ensure that when creating new products, the number comes before the duration keyword (e.g., '3_months', not 'months_3').
+- The system has fallback values for certain durations. For example, if 'days' is used without a number, it defaults to 7 days. Be aware of these defaults when creating new products.
+- When adding new product types or modifying existing ones, ensure that the `CreditWebhookService` class is updated to handle the new formats correctly.
+- Regular audits of product IDs across all platforms (iOS and Android) should be conducted to ensure consistency with this naming convention.

@@ -1,0 +1,170 @@
+---
+title: iOS Post-Approval Restoration
+description: "Steps to restore normal app functionality after iOS App Store approval"
+---
+
+# iOS Post-Approval Restoration
+
+This guide outlines the steps to restore My Best Pic to full functionality after receiving iOS App Store approval. These steps reverse the changes made during the pre-submission process.
+
+<Info>
+**When to use this guide**: Only after receiving official App Store approval notification and the app is live on the App Store.
+</Info>
+
+## Restoration Timeline
+
+<Warning>
+Wait **at least 24-48 hours** after App Store approval before making these changes to ensure the app is fully live and stable in the App Store.
+</Warning>
+
+## Restoration Tasks
+
+### 1. Firebase Remote Config Restoration
+
+<Steps>
+  <Step title="Access Firebase Console">
+    Log into Firebase Console for My Best Pic project
+  </Step>
+  <Step title="Navigate to Remote Config">
+    Go to Remote Config section in Firebase Console
+  </Step>
+  <Step title="Update show_people_photos Parameter">
+    Set `show_people_photos = true`
+    
+    **Purpose**: Re-enables people photos feature for users
+  </Step>
+  <Step title="Publish Configuration">
+    Publish the remote config changes to production
+  </Step>
+</Steps>
+
+### 2. Category Management Restoration
+
+<Steps>
+  <Step title="Access Category Settings">
+    Navigate to category management in the application admin panel
+  </Step>
+  <Step title="Enable Dating Category">
+    Set Dating category status to **enabled/visible**
+    
+    **Result**: Dating category becomes available to users
+  </Step>
+  <Step title="Enable Business Category">
+    Set Business category status to **enabled/visible**
+    
+    **Result**: Business category becomes available to users
+  </Step>
+  <Step title="Verify Changes">
+    Confirm both categories are now visible in the app
+  </Step>
+</Steps>
+
+## Post-Restoration Verification
+
+After completing restoration tasks, verify all changes are working correctly:
+
+<Accordion title="Firebase Remote Config Verification">
+- [ ] `show_people_photos` parameter is set to `true`
+- [ ] Configuration is published to production environment
+- [ ] App reflects the remote config changes (test on device)
+- [ ] People photos feature is accessible and working
+- [ ] Feature functions as expected without issues
+</Accordion>
+
+<Accordion title="Category Verification">
+- [ ] Dating category is visible in category selection
+- [ ] Business category is visible in category selection  
+- [ ] Previously hidden content in these categories is accessible
+- [ ] Category filtering includes all restored categories
+- [ ] User can successfully use restored categories
+</Accordion>
+
+## Testing Requirements
+
+### Immediate Testing (Within 2 hours of changes)
+1. **Device Testing**: Test on physical iOS device to confirm changes
+2. **Feature Verification**: Ensure restored features work correctly
+3. **User Flow Testing**: Complete end-to-end testing of restored functionality
+
+### Extended Testing (24-48 hours)
+- Monitor app performance and stability
+- Check for any user-reported issues
+- Verify analytics show normal feature usage patterns
+
+## User Communication
+
+<Tip>
+Consider notifying users about restored features through in-app announcements or push notifications, especially if these features were previously available.
+</Tip>
+
+### Communication Options
+- **In-app notification**: "New features now available!"
+- **Push notification**: Announce restored functionality
+- **Social media**: Update users about enhanced features
+- **Support documentation**: Update user guides with restored features
+
+## Monitoring Post-Restoration
+
+### Key Metrics to Watch
+- App crash rates (should remain stable)
+- User engagement with restored features
+- App Store rating/review trends
+- Customer support inquiries
+
+### Alert Thresholds
+If any of the following occur, consider temporary rollback:
+- Crash rate increases by >10%
+- Significant negative App Store reviews mentioning restored features
+- App Store compliance warnings
+
+## Rollback Procedures
+
+If issues arise after restoration:
+
+<Steps>
+  <Step title="Immediate Assessment">
+    Determine severity and scope of issues
+  </Step>
+  <Step title="Quick Rollback">
+    Reverse Firebase Remote Config and category settings
+  </Step>
+  <Step title="Issue Investigation">
+    Identify root cause of problems
+  </Step>
+  <Step title="Gradual Re-enablement">
+    Re-enable features one at a time after fixes
+  </Step>
+</Steps>
+
+## Documentation Updates
+
+After successful restoration:
+- [ ] Update internal feature documentation
+- [ ] Notify support team of restored features
+- [ ] Update user-facing help documentation
+- [ ] Record restoration date and any issues encountered
+
+## Contact for Issues
+
+If problems occur during restoration:
+- **Technical Issues**: Contact development team via #mybestpic-development Discord channel
+- **Firebase Access Issues**: Contact Damian Diaz
+- **Category Management Issues**: Contact project management team
+- **App Store Compliance Concerns**: Escalate to leadership team immediately
+
+## Success Confirmation
+
+<Accordion title="Restoration Complete Checklist">
+- [ ] Firebase Remote Config restored (`show_people_photos = true`)
+- [ ] Dating category enabled and functional
+- [ ] Business category enabled and functional
+- [ ] All features tested on physical device
+- [ ] No increase in crash rates or negative reviews
+- [ ] User communication sent (if applicable)
+- [ ] Documentation updated
+- [ ] Team notified of successful restoration
+</Accordion>
+
+<Info>
+Keep this page bookmarked for future iOS submissions, as this process will likely be repeated for subsequent App Store updates.
+</Info>

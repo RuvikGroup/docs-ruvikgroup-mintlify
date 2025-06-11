@@ -1,0 +1,149 @@
+---
+title: Local Development Setup
+description: "Set up My Best Pic for local development"
+---
+
+# Local Development Setup
+
+This guide walks through setting up My Best Pic on your local development machine.
+
+## Prerequisites
+
+- Node.js v18+ 
+- PostgreSQL 14+
+- Redis 6+
+- Git
+
+## Repository Setup
+
+<Steps>
+  <Step title="Clone Repository">
+    ```bash
+    git clone git@github.com:ruvikgroup/mybestpic.git
+    cd mybestpic
+    ```
+  </Step>
+  
+  <Step title="Install Dependencies">
+    ```bash
+    npm install
+    # or
+    yarn install
+    ```
+  </Step>
+  
+  <Step title="Environment Configuration">
+    Copy the example environment file and configure:
+    ```bash
+    cp .env.example .env
+    ```
+    
+    See [Environment Variables](/my-best-pic/setup/environment-variables) for detailed configuration.
+  </Step>
+</Steps>
+
+## Database Setup
+
+1. Create the database:
+   ```sql
+   CREATE DATABASE mybestpic_dev;
+   ```
+
+2. Run migrations:
+   ```bash
+   npm run db:migrate
+   ```
+
+3. Seed development data (optional):
+   ```bash
+   npm run db:seed
+   ```
+
+## Running the Application
+
+### Development Server
+```bash
+npm run dev
+```
+
+The application will be available at:
+- Frontend: http://localhost:3000
+- API: http://localhost:3000/api
+- Admin Panel: http://localhost:3000/admin
+
+### Background Services
+
+Start the queue worker for processing uploads:
+```bash
+npm run worker
+```
+
+## Common Development Tasks
+
+### Running Tests
+```bash
+# Unit tests
+npm test
+
+# E2E tests
+npm run test:e2e
+
+# Watch mode
+npm run test:watch
+```
+
+### Database Commands
+```bash
+# Create a new migration
+npm run db:migration:create -- --name=add_new_table
+
+# Reset database
+npm run db:reset
+```
+
+### Code Quality
+```bash
+# Linting
+npm run lint
+
+# Type checking
+npm run typecheck
+
+# Format code
+npm run format
+```
+
+## Troubleshooting
+
+### Port Already in Use
+If port 3000 is already in use:
+```bash
+PORT=3001 npm run dev
+```
+
+### Database Connection Issues
+1. Verify PostgreSQL is running
+2. Check connection string in `.env`
+3. Ensure database exists
+
+### Redis Connection Failed
+1. Start Redis service:
+   ```bash
+   redis-server
+   ```
+2. Verify Redis URL in `.env`
+
+## IDE Setup
+
+### VS Code
+Recommended extensions:
+- ESLint
+- Prettier
+- Prisma
+
+Settings are pre-configured in `.vscode/settings.json`
+
+### IntelliJ IDEA
+1. Enable ESLint integration
+2. Configure Node.js interpreter
+3. Set up database tools for PostgreSQL

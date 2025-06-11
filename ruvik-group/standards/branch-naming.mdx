@@ -1,0 +1,91 @@
+---
+title: Branch Naming Convention
+description: "GitHub branch naming standards for all repositories"
+---
+
+# Branch Naming Convention
+
+## Table of Contents
+1. [Introduction](#introduction)
+2. [General Rules](#general-rules)
+3. [Branch Types](#branch-types)
+4. [Naming Format](#naming-format)
+5. [Examples](#examples)
+6. [Best Practices](#best-practices)
+7. [Integration with GitHub Issues and Projects](#integration-with-github-issues-and-projects)
+8. [Handling Exceptions](#handling-exceptions)
+
+## Introduction
+
+This document outlines the branch naming conventions for all repositories within the Ruvik Group organization, specifically tailored for use with GitHub Issues and Projects.
+
+## General Rules
+
+- Use lowercase letters
+- Use hyphens (-) to separate words
+- Be concise but descriptive
+- Include relevant GitHub issue numbers where applicable
+
+## Branch Types
+
+We use the following branch types:
+
+1. `feature`: For developing new features
+2. `bugfix`: For fixing bugs
+3. `hotfix`: For quick fixes to production code
+4. `release`: For release preparation
+5. `refactor`: For code refactoring
+6. `docs`: For documentation updates
+7. `test`: For adding or updating tests
+
+## Naming Format
+
+The general format for branch names is:
+
+```
+<type>/<issue-number>-<short-description>
+```
+
+- `<type>`: One of the branch types listed above
+- `<issue-number>`: The associated GitHub issue number (without leading zeros)
+- `<short-description>`: A brief, hyphen-separated description
+
+## Examples
+
+- `feature/42-add-user-authentication`
+- `bugfix/123-fix-login-error`
+- `hotfix/456-patch-security-vulnerability`
+- `release/v1.2.3`
+- `refactor/789-improve-performance`
+- `docs/234-update-api-documentation`
+- `test/567-add-unit-tests-for-auth`
+
+## Best Practices
+
+1. Keep branch names short and meaningful
+2. Always use the issue number when working on a GitHub issue
+3. Delete branches after they've been merged
+4. Regularly update your local repository to clean up deleted remote branches
+5. Avoid using personal names or usernames in branch names
+
+## Integration with GitHub Issues and Projects
+
+1. Always include the GitHub issue number in the branch name when working on an issue
+2. Use the exact issue number as it appears in GitHub (e.g., '42' for issue #42)
+3. When creating a pull request, use the GitHub feature to link it to the related issue
+4. In commit messages, use GitHub's syntax to reference issues:
+   - Use `#<issue-number>` to reference an issue within the same repository
+   - Use `<organization>/<repo>#<issue-number>` for cross-repository references
+5. Take advantage of GitHub's automation features:
+   - Use keywords like "Fixes #42" or "Closes #42" in pull request descriptions to automatically close issues when merged
+   - Utilize GitHub Actions to automate workflows based on branch names
+
+## Handling Exceptions
+
+While consistency is crucial, there may be situations where strict adherence to the naming convention is impractical. In such cases:
+
+1. Consult with the team lead or repository administrator
+2. Document the reason for the exception in the related issue or pull request
+3. Try to stay as close to the convention as possible
+
+Remember, the goal of this naming convention is to improve clarity and efficiency in our development process while leveraging GitHub's features. When in doubt, choose a name that clearly communicates the purpose of the branch to your team members and integrates well with our GitHub workflow.

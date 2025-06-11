@@ -1,0 +1,163 @@
+---
+title: Architecture Overview
+description: "High-level architecture and system design overview for My Best Pic"
+---
+
+# Architecture Overview
+
+This page provides a comprehensive overview of the My Best Pic application architecture, including system design, technology choices, and how different components work together.
+
+## Application Overview
+
+My Best Pic is a professional photo management and organization platform designed for photographers, creative professionals, and businesses that need to manage large collections of visual content.
+
+### Core Features
+- **Photo Organization**: Categorize and organize photo collections
+- **Subject Management**: Tag and track subjects across collections
+- **Depiction Tracking**: Manage how subjects are portrayed in images
+- **Credit Attribution**: Track licensing and attribution information
+
+## System Architecture
+
+<CardGroup cols={2}>
+  <Card title="Mobile Frontend" icon="mobile">
+    **Flutter Cross-Platform App**
+    - iOS and Android native performance
+    - Shared codebase for consistent UX
+    - Rich media handling capabilities
+  </Card>
+  <Card title="Backend API" icon="server">
+    **Laravel + GraphQL**
+    - Flexible data querying with GraphQL
+    - Laravel framework for robust backend
+    - Efficient photo metadata management
+  </Card>
+</CardGroup>
+
+## Technology Stack
+
+### Frontend Technologies
+- **Flutter Framework**: Cross-platform mobile development
+- **Dart Language**: Client-side application logic
+- **GraphQL Client**: Efficient data fetching and caching
+- **Platform Integrations**: Camera, gallery, and file system access
+
+### Backend Technologies
+- **Laravel Framework**: PHP-based backend framework
+- **GraphQL API**: Flexible query language for data access
+- **Database**: Traditional SQL database for structured data
+- **File Storage**: Photo and media asset management
+
+## Data Flow Architecture
+
+<Steps>
+  <Step title="User Interaction">
+    User interacts with Flutter mobile application
+  </Step>
+  <Step title="GraphQL Queries">
+    App sends GraphQL queries/mutations to Laravel backend
+  </Step>
+  <Step title="Data Processing">
+    Laravel processes requests and interacts with database
+  </Step>
+  <Step title="Response">
+    Structured data returned via GraphQL to mobile app
+  </Step>
+</Steps>
+
+## Key Architectural Decisions
+
+### Why Flutter?
+- **Cross-platform efficiency**: Single codebase for iOS and Android
+- **Performance**: Near-native performance for media-heavy applications
+- **Rich UI capabilities**: Excellent for photo management interfaces
+
+### Why GraphQL?
+- **Flexible querying**: Clients can request exactly the data they need
+- **Type safety**: Strong typing reduces integration errors
+- **Efficient**: Reduces over-fetching of data for mobile applications
+
+### Why Laravel?
+- **Rapid development**: Rich ecosystem and built-in features
+- **GraphQL integration**: Excellent GraphQL libraries available
+- **Scalable**: Proven framework for growing applications
+
+## Infrastructure Architecture
+
+For detailed infrastructure information including deployment pipelines, environment setup, and operational considerations, see the [Infrastructure Documentation](/my-best-pic/architecture/infrastructure).
+
+### High-Level Infrastructure
+- **Mobile Deployment**: Codemagic CI/CD for app store releases
+- **Backend Deployment**: Chipper CI for server deployments
+- **Development Environment**: Local Flutter + Laravel development stack
+
+## Security Architecture
+
+### Current Security Measures
+- **Authentication**: Laravel-based user authentication
+- **API Security**: GraphQL query validation and rate limiting
+- **Data Protection**: Secure handling of photo metadata and user data
+- **Mobile Security**: Platform-specific security features (iOS/Android)
+
+## Performance Considerations
+
+### Mobile App Performance
+- **Image Optimization**: Efficient loading and caching of photos
+- **GraphQL Caching**: Client-side caching for frequently accessed data
+- **Background Processing**: Async operations for non-blocking UX
+
+### Backend Performance
+- **GraphQL Optimization**: Query complexity analysis and optimization
+- **Database Indexing**: Optimized queries for photo search and filtering
+- **Caching Strategy**: Redis/Memcached for frequently accessed data
+
+## Future Architecture Evolution
+
+<Note>
+Migration to Supabase is planned but timeline is not yet determined. This will involve significant architectural changes to backend services and data management.
+</Note>
+
+### Current State vs. Future State
+- **Current**: Laravel + Traditional Database + Custom GraphQL implementation
+- **Future**: Supabase + Auto-generated APIs + Real-time capabilities
+
+## Development Architecture
+
+### Code Organization
+- **Frontend**: Flutter app with feature-based module organization
+- **Backend**: Laravel with GraphQL schema and resolver organization
+- **Shared**: API contracts and data models
+
+### Development Workflow
+1. Feature development in separate branches
+2. Code review via GitHub pull requests
+3. Automated testing (where implemented)
+4. Staging deployments for testing
+5. Production releases via CI/CD pipelines
+
+## Integration Points
+
+### External Services
+- **App Stores**: iOS App Store and Google Play Store distribution
+- **File Storage**: Cloud storage for photo assets
+- **Analytics**: User behavior and performance tracking (to be documented)
+
+### Internal Integrations
+- **User Management**: Authentication and user profile management
+- **Photo Processing**: Image optimization and metadata extraction
+- **Search Functionality**: Full-text search across photo collections
+
+## Monitoring & Observability
+
+<Tip>
+For detailed monitoring, logging, and operational procedures, see the [Operations Documentation](/my-best-pic/operations/monitoring).
+</Tip>
+
+Current observability includes:
+- Application logging via Laravel
+- Mobile app crash reporting
+- Performance monitoring (to be expanded)
+
+---
+
+This architecture overview provides the foundation for understanding My Best Pic's technical design. For implementation details, refer to the specific documentation sections linked throughout this page.

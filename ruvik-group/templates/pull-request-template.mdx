@@ -1,0 +1,94 @@
+---
+title: Pull Request Template
+description: "Standard PR template for GitHub pull requests"
+---
+
+# Pull Request Template
+
+Use this template when creating pull requests. Copy the markdown below into your PR description.
+
+<Note>
+  GitHub will automatically use this template if you save it as `.github/pull_request_template.md` in your repository.
+</Note>
+
+```markdown
+## Description
+[Provide a brief, clear description of the changes in this PR]
+
+## Related Issue
+[Reference the GitHub issue this PR addresses, e.g., "Closes #123" or "Relates to #456"]
+
+## Type of Change
+Please delete options that are not relevant.
+
+- [ ] Bug fix (non-breaking change which fixes an issue)
+- [ ] New feature (non-breaking change which adds functionality)
+- [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
+- [ ] This change requires a documentation update
+
+## How Has This Been Tested?
+[Describe the tests you ran to verify your changes. Provide instructions so we can reproduce.]
+
+- [ ] Test A
+- [ ] Test B
+
+**Test Configuration**:
+* OS: [e.g., macOS 12.0]
+* Browser: [e.g., Chrome 95]
+* Version: [e.g., Node 16.13.0]
+
+## Checklist:
+- [ ] My code follows the style guidelines of this project
+- [ ] I have performed a self-review of my own code
+- [ ] I have commented my code, particularly in hard-to-understand areas
+- [ ] I have made corresponding changes to the documentation
+- [ ] My changes generate no new warnings
+- [ ] I have added tests that prove my fix is effective or that my feature works
+- [ ] New and existing unit tests pass locally with my changes
+- [ ] Any dependent changes have been merged and published in downstream modules
+
+## Screenshots (if applicable):
+[Add screenshots to help explain your changes]
+
+## Additional Notes:
+[Any additional information that reviewers should know]
+```
+
+## Best Practices
+
+### Writing Good PR Descriptions
+
+1. **Be Clear and Concise**: Explain what changed and why
+2. **Link Issues**: Always reference related issues
+3. **Include Context**: Help reviewers understand the background
+4. **List Testing Steps**: Make it easy to verify your changes
+5. **Add Screenshots**: Visual changes should include before/after
+
+### PR Title Format
+
+Follow this format for PR titles:
+```
+<type>(<scope>): <subject>
+
+Examples:
+feat(auth): add OAuth2 integration
+fix(upload): resolve memory leak in image processor
+docs(api): update endpoint documentation
+chore(deps): upgrade to React 18
+```
+
+### Types
+- **feat**: New feature
+- **fix**: Bug fix
+- **docs**: Documentation only
+- **style**: Code style changes (formatting, missing semicolons, etc)
+- **refactor**: Code refactoring
+- **test**: Adding or updating tests
+- **chore**: Maintenance tasks
+
+### Review Process
+
+1. **Self-Review First**: Check your own code before requesting reviews
+2. **Address All Comments**: Respond to or resolve all review comments
+3. **Keep PRs Small**: Easier to review and less likely to introduce bugs
+4. **Update Often**: Keep your branch up to date with the base branch

@@ -1,0 +1,126 @@
+---
+title: Infrastructure Overview
+description: "Ruvik Group infrastructure, deployment pipelines, and technical architecture"
+---
+
+# Infrastructure Overview
+
+This page provides a high-level overview of Ruvik Group's infrastructure approach and standards. For detailed product-specific infrastructure information, see the individual product documentation sections.
+
+## Infrastructure Philosophy
+
+Ruvik Group follows a **product-specific infrastructure** approach, where each product has its own tailored infrastructure setup based on its specific requirements and technology stack.
+
+## Technology Stack Overview
+
+### Frontend Standards
+- **Primary Technology**: Flutter for cross-platform mobile development
+- **Deployment**: Codemagic CI/CD for mobile app builds and releases
+
+### Backend Approach
+- **Current Mix**: Laravel (legacy) + Supabase (modern)
+- **Migration Strategy**: Moving towards Supabase for consistency and modern features
+
+## Product Infrastructure
+
+<CardGroup cols={2}>
+  <Card title="My Best Pic Infrastructure" icon="mobile" href="/my-best-pic/architecture/infrastructure">
+    Flutter frontend with Laravel backend (migrating to Supabase)
+  </Card>
+  <Card title="Jubley Infrastructure" icon="database">
+    Flutter frontend with Supabase backend (modern stack)
+  </Card>
+</CardGroup>
+
+## Common Infrastructure Standards
+
+### CI/CD Standards
+- **Codemagic**: Primary CI/CD platform for Flutter applications
+- **Chipper CI**: Used for specific backend deployments (My Best Pic)
+- **Automated Testing**: Integrated into deployment pipelines where applicable
+
+### Development Environment Standards
+- **Version Control**: GitHub for all repositories
+- **Project Management**: GitHub Projects for issue tracking
+- **Communication**: Discord for team coordination
+
+## Migration Plans
+
+### My Best Pic Backend Migration
+<Steps>
+  <Step title="Current State">
+    Laravel backend with traditional database setup
+  </Step>
+  <Step title="Migration Target">
+    Supabase backend for consistency across products
+  </Step>
+  <Step title="Timeline">
+    Migration timeline and milestones TBD
+  </Step>
+</Steps>
+
+<Warning>
+The My Best Pic Supabase migration is planned but not yet scheduled. Check with the development team for current status.
+</Warning>
+
+## Development Tooling
+
+<Accordion title="Development Tools & Services">
+This section will be expanded with detailed information about:
+- Local development setup requirements
+- Database management tools
+- API testing tools
+- Code quality tools
+- Monitoring and logging solutions
+- Authentication and security services
+
+*Contact the development team to contribute to this section.*
+</Accordion>
+
+## Access & Permissions
+
+### Required Access for Developers
+- **Codemagic**: CI/CD pipeline access
+- **Chipper CI**: Backend deployment access (My Best Pic)
+- **Supabase**: Database and backend services (Jubley)
+- **GitHub**: Repository access for all projects
+
+### Getting Access
+Contact your project manager (Chris Shortreed) or frontend lead (Damian Diaz) to request access to necessary services.
+
+## Environment Management
+
+### Development Environments
+- **Local Development**: Each product has specific setup requirements (see product-specific documentation)
+- **Staging**: Managed through CI/CD pipelines
+- **Production**: Automated deployment through respective CI/CD services
+
+## Database Architecture
+
+### My Best Pic
+- **Current**: Traditional database setup with Laravel
+- **Future**: Supabase PostgreSQL database
+
+### Jubley
+- **Current**: Supabase PostgreSQL database
+- **Features**: Real-time subscriptions, built-in authentication, auto-generated APIs
+
+## Monitoring & Observability
+
+<Note>
+Monitoring and observability tools will be documented here as they are implemented across our infrastructure.
+</Note>
+
+## Support & Troubleshooting
+
+For infrastructure-related issues:
+1. Check product-specific operations documentation
+2. Contact the development team through Discord
+3. For urgent issues, contact Damian Diaz directly
+
+## Infrastructure Roadmap
+
+- Complete My Best Pic Supabase migration
+- Standardize CI/CD processes across all products
+- Implement comprehensive monitoring solutions
+- Document detailed tooling and development environment setup

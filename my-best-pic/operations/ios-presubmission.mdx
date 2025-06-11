@@ -1,0 +1,120 @@
+---
+title: iOS Pre-Submission Checklist
+description: "Required housekeeping tasks before submitting My Best Pic to the iOS App Store"
+---
+
+# iOS Pre-Submission Checklist
+
+This checklist outlines the critical housekeeping tasks that must be completed before submitting My Best Pic to the iOS App Store for review. These steps help ensure App Store compliance and prevent rejections.
+
+<Warning>
+**ALL items in this checklist must be completed before submission.** Failure to complete these tasks may result in App Store rejection or content policy violations.
+</Warning>
+
+## Pre-Submission Tasks
+
+### 1. Firebase Remote Config Updates
+
+<Steps>
+  <Step title="Access Firebase Console">
+    Log into Firebase Console for My Best Pic project
+  </Step>
+  <Step title="Navigate to Remote Config">
+    Go to Remote Config section in Firebase Console
+  </Step>
+  <Step title="Update show_people_photos Parameter">
+    Set `show_people_photos = false`
+    
+    **Purpose**: Disables people photos feature for App Store compliance
+  </Step>
+  <Step title="Publish Configuration">
+    Publish the remote config changes to production
+  </Step>
+</Steps>
+
+### 2. Category Management
+
+<Steps>
+  <Step title="Access Category Settings">
+    Navigate to category management in the application admin panel
+  </Step>
+  <Step title="Disable Dating Category">
+    Set Dating category status to **disabled/hidden**
+    
+    **Reason**: App Store content policy compliance
+  </Step>
+  <Step title="Disable Business Category">
+    Set Business category status to **disabled/hidden**
+    
+    **Reason**: App Store content policy compliance
+  </Step>
+  <Step title="Verify Changes">
+    Confirm both categories are no longer visible in the app
+  </Step>
+</Steps>
+
+## Verification Checklist
+
+Before final submission, verify all changes are active:
+
+<Accordion title="Firebase Remote Config Verification">
+- [ ] `show_people_photos` parameter is set to `false`
+- [ ] Configuration is published to production environment
+- [ ] App reflects the remote config changes (test on device)
+- [ ] People photos feature is not accessible in app
+</Accordion>
+
+<Accordion title="Category Verification">
+- [ ] Dating category is not visible in category selection
+- [ ] Business category is not visible in category selection  
+- [ ] Existing content in these categories is properly handled
+- [ ] Category filtering works correctly without these categories
+</Accordion>
+
+## Post-Configuration Steps
+
+### Testing Requirements
+1. **Device Testing**: Test on physical iOS device to confirm changes
+2. **Feature Verification**: Ensure disabled features are completely inaccessible
+3. **User Flow Testing**: Verify app functionality remains intact after changes
+
+### Documentation
+- [ ] Update internal documentation if category changes affect user guides
+- [ ] Notify support team of temporarily disabled features
+- [ ] Document rollback procedures if needed post-approval
+
+## Important Notes
+
+<Info>
+These configuration changes are specifically for App Store submission compliance. After approval, evaluate whether features can be re-enabled based on App Store guidelines and user feedback.
+</Info>
+
+### Timeline Considerations
+- Complete these tasks **at least 24 hours** before submission deadline
+- Allow time for thorough testing after configuration changes
+- Coordinate with development team for any technical issues
+
+### Rollback Plan
+If issues arise after making these changes:
+1. Firebase Remote Config can be reverted quickly
+2. Category settings can be re-enabled through admin panel
+3. Document any user impact and communication needed
+
+## Contact for Issues
+
+If you encounter problems with any of these steps:
+- **Technical Issues**: Contact development team via #mybestpic-development Discord channel
+- **Firebase Access**: Contact Damian Diaz for permissions
+- **Category Management**: Contact project management team
+
+## Submission Readiness
+
+<Tip>
+Only proceed with App Store submission after **ALL** items in this checklist are completed and verified. This helps ensure a smooth review process and reduces the risk of rejection.
+</Tip>
+
+Once all pre-submission tasks are complete:
+1. Perform final build through Codemagic
+2. Submit to App Store Connect
+3. Monitor submission status
+4. Be prepared to address any reviewer feedback
