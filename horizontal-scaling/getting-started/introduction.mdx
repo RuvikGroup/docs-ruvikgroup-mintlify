@@ -7,6 +7,86 @@ description: "Learn how to create new branded applications from the Jubley base"
 
 Jubley serves as the foundation for creating multiple branded applications. Through a series of automated scripts, you can transform the base Jubley application into a completely new branded experience, each with its own unique identity and configuration.
 
+## Prerequisites
+
+Before running any scripts, you need to set up the following third-party services for your new brand:
+
+### App Stores
+
+- **Google Play Console**
+
+  - Create new application
+  - Set up store listing
+  - Configure app signing
+  - Prepare privacy policy
+
+- **Apple App Store**
+  - Create new application
+  - Set up App Store Connect
+  - Configure certificates
+  - Prepare store listing
+
+### Analytics & Monitoring
+
+- **Firebase**
+
+  - Create new project
+  - Set up Analytics
+  - Configure Crashlytics
+  - Set up Cloud Messaging
+
+- **Sentry**
+
+  - Create new project
+  - Configure error tracking
+  - Set up performance monitoring
+
+- **Mixpanel**
+
+  - Create new project
+  - Set up event tracking
+  - Configure user analytics
+
+- **Google Tag Manager**
+  - Create new container
+  - Set up tracking tags
+  - Configure triggers
+
+### Backend & Services
+
+- **Supabase**
+
+  - Create new project
+  - Set up database
+  - Configure authentication
+  - Set up storage
+
+- **Algolia**
+  - Create new application
+  - Set up search indices
+  - Configure API keys
+
+### Maps & Location
+
+- **Mapbox**
+  - Create new project
+  - Set up map styles
+  - Configure access tokens
+
+### Social & Marketing
+
+- **Facebook**
+  - Create new app
+  - Configure SDK
+  - Set up app events
+
+### Payments & Subscriptions
+
+- **RevenueCat**
+  - Create new project
+  - Set up products
+  - Configure subscriptions
+
 ## How It Works
 
 <CardGroup cols={2}>
@@ -55,7 +135,18 @@ The automated scripts handle:
 
 ## Step-by-Step Process
 
-### 1. Initial Setup
+### 1. Service Setup
+
+Before running any scripts, ensure you have:
+
+1. Created all required third-party service accounts
+2. Collected all necessary API keys and credentials
+3. Set up app store listings
+4. Configured analytics and monitoring
+5. Set up backend services
+6. Prepared payment and subscription systems
+
+### 2. Initial Setup
 
 Run the configuration script with your brand name:
 
@@ -69,7 +160,7 @@ This initiates the brand configuration process. The script will:
 - Check for existing configurations
 - Prepare for the transformation
 
-### 2. Brand Configuration
+### 3. Brand Configuration
 
 The script will prompt for:
 
@@ -80,7 +171,7 @@ The script will prompt for:
 - iOS bundle ID (default: com.{brand}.app)
 - Brand description
 
-### 3. Theme Configuration
+### 4. Theme Configuration
 
 Configure the visual identity:
 
@@ -89,7 +180,7 @@ Configure the visual identity:
 - Primary color (default: #4B164C)
 - Secondary color (default: #DD88CF)
 
-### 4. Automated Script Execution
+### 5. Automated Script Execution
 
 The following scripts run in sequence:
 
@@ -146,7 +237,7 @@ The following scripts run in sequence:
    - Sets up iOS-specific configurations
    - Updates iOS project settings
 
-### 5. Web Configuration
+### 6. Web Configuration
 
 The script automatically updates:
 
@@ -158,7 +249,7 @@ The script automatically updates:
   - Page title
   - Mobile web app title
 
-### 6. Verification Steps
+### 7. Verification Steps
 
 After completion, verify:
 
@@ -166,7 +257,7 @@ After completion, verify:
 2. Generated brand directory at `lib/{brand}`
 3. Product flavors in `android/app/build.gradle`
 
-### 7. Manual Configuration Steps
+### 8. Manual Configuration Steps
 
 After the automated scripts complete, you need to manually update the following:
 
@@ -230,6 +321,9 @@ This scaling approach is perfect for:
 ## Getting Started
 
 <Steps>
+  <Step title="Setup Services">
+    Create and configure all required third-party services
+  </Step>
   <Step title="Prepare Base">
     Ensure you have the latest Jubley base application
   </Step>
