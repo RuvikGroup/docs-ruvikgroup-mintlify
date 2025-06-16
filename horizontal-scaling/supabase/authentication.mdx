@@ -1,0 +1,85 @@
+---
+title: "Authentication"
+description: "Configure Supabase authentication for your new branded application"
+---
+
+---
+
+### Email/Password
+
+- From you [project dashboard](https://supabase.com/dashboard), go to `Authentication` -> `Sign In / Providers`.
+
+![Auth](/images/supabase/auth-tab.png)
+![Auth](/images/supabase/sign-in-prov.png)
+
+- Make sure you have `Allow new users to sign up` option enabled.
+- Enable and configure the OAuth providers you want to support under `Auth Providers` (`Email` provider should be enabled by default).
+- You will need to provide the `Client ID` and `Client Secret` from each provider.
+
+### Apple
+
+- Click on `Apple` under `Auth Providers`.
+
+![Auth](/images/supabase/apple-auth.png)
+
+- Fill the form with your Apple project [Client IDs](https://developer.apple.com/documentation/sign_in_with_apple/sign_in_with_apple_js) (e.g. com.example.app) and your [Secret Key](https://supabase.com/docs/guides/auth/social-login/auth-apple#generate-a-client_secret).
+
+![Auth](/images/supabase/apple-auth-panel.png)
+
+- Save aside the `Callback URL (for OAuth)`, it could be used later when using Sign in with Apple on the web in the Apple Developer Center.
+- Click on `Save` at the bottom right of the panel.
+
+### Google
+
+- Click on `Google` under `Auth Providers`.
+
+![Auth](/images/supabase/google-auth.png)
+
+- Fill the form with your Google project Client IDs and your Secret Key. (Both can be found under `OAuth 2.0 Client IDs` in your project [Google Cloud Console](https://console.cloud.google.com/auth/clients))
+
+![Auth](/images/supabase/google-auth-panel.png)
+
+- Save aside the `Callback URL (for OAuth)`, it could be used later to register as callback URL when using Sign-in with Google on the web using OAuth.
+- Click on `Save` at the bottom right of the panel.
+
+### Facebook
+
+- Click on `Facebook` under `Auth Providers`.
+
+![Auth](/images/supabase/facebook-auth.png)
+
+- Fill the form with your Facebook project client ID and your Facebook secret. (Both can be found in your project [Facebook Developer dashboard](https://developers.facebook.com/))
+
+![Auth](/images/supabase/facebook-auth-panel.png)
+
+- Click on `Save` at the bottom right of the panel.
+
+### URL Configuration
+
+- From you [project dashboard](https://supabase.com/dashboard), go to `Authentication` -> `URL Configuration`.
+
+![Auth](/images/supabase/url-tab.png)
+
+![Auth](/images/supabase/url-tab-prov.png)
+
+- Set your `Site URL` to your production URL (e.g., `https://web.brand.com`).
+- Add your development and staging URLs to `Redirect URLs` (e.g., `http://localhost:3000`, `https://webstaging.brand.com`).
+
+### Email Templates
+
+- From you [project dashboard](https://supabase.com/dashboard), go to `Authentication` -> `Emails`.
+- Click on `SMTP Settings` tab to setup your SMTP email server details and be able to send emails.
+
+> Get your SMTP details from your project email provider (e.g. [Resend](https://resend.com/settings/smtp))
+
+![Auth](/images/supabase/emails-smtp.png)
+
+- Click on `Templates` tab to setup your `Subject heading` and the `Message body` for each kind of email managed by Supabase.
+- Customize the email templates to match your brand's voice and design.
+- Click on `Save changes` for each template you customize.
+
+## References
+
+- [Supabase OAuth Providers](https://supabase.com/docs/guides/auth/social-login)
+- [Sending Emails With Resend](https://supabase.com/docs/guides/functions/examples/send-emails)
+- [Email Rate Limits](https://supabase.com/dashboard/project/uztuvgojlanouhjcewor/auth/rate-limits)

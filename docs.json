@@ -94,7 +94,21 @@
           {
             "group": "Getting Started",
             "pages": [
-              "horizontal-scaling/getting-started/introduction"
+              "horizontal-scaling/getting-started/introduction",
+              "horizontal-scaling/appstore/appstore",
+              "horizontal-scaling/googleplay/googleplaysetup",
+              "horizontal-scaling/branding/color-theme",
+              "horizontal-scaling/compliance/age-limits"
+            ]
+          },
+          {
+            "group": "Supabase",
+            "pages": [
+              "horizontal-scaling/supabase/create-project",
+              "horizontal-scaling/supabase/authentication",
+              "horizontal-scaling/supabase/storage",
+              "horizontal-scaling/supabase/secrets",
+              "horizontal-scaling/supabase/database"
             ]
           }
         ]

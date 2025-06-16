@@ -41,6 +41,7 @@ Before running any scripts, you need to set up the following third-party service
 - **Google Tag Manager**
   - Create new container
   - Set up tracking tags
+  - Configure triggers
 
 ### Backend & Services
 
@@ -52,6 +53,9 @@ Before running any scripts, you need to set up the following third-party service
 - **Algolia**
   - Create new application
   - Set up search indices
+  - Configure API keys
+- **n8n**
+  - Set up workflow automation
   - Configure API keys
 
 ### Maps & Location
@@ -74,6 +78,13 @@ Before running any scripts, you need to set up the following third-party service
   - Create new project
   - Set up products
   - Configure subscriptions
+
+### Notifications
+
+- **OneSignal**
+  - Create new project
+  - Configure push notifications
+  - Set up API keys
 
 ## How It Works
 
@@ -177,42 +188,53 @@ The following scripts run in sequence:
    ```bash
    ./scripts/add_product_flavor_0.sh
    ```
+
    - Adds Android product flavors
    - Configures build variants
+
 2. **Asset Management**
 
    ```bash
    ./scripts/copy_brand_assets_1.sh
    ```
+
    - Creates brand-specific asset directories
    - Sets up asset prefixes
+
 3. **Dependencies Update**
 
    ```bash
    ./scripts/update_pubspec_3.sh
    ```
+
    - Updates Flutter dependencies
    - Configures brand-specific packages
+
 4. **YAML Configuration**
 
    ```bash
    ./scripts/update_yaml_configs_4.sh
    ```
+
    - Updates various YAML configurations
    - Sets up brand-specific settings
+
 5. **Firebase Setup**
 
    ```bash
    ./scripts/copy_firebase_config_5.sh
    ```
+
    - Configures Firebase for the new brand
    - Sets up Firebase project settings
+
 6. **iOS Configuration**
 
    ```bash
    ./scripts/copy_ios_config_6.sh
    ./scripts/update_ios_project_7.sh
    ```
+
    - Sets up iOS-specific configurations
    - Updates iOS project settings
 
@@ -318,4 +340,3 @@ This scaling approach is perfect for:
 - [Brand Configuration →](/jubley/getting-started/brand-config)
 - [Asset Management →](/jubley/guides/assets)
 - [Platform Configuration →](/jubley/guides/platforms)
-- 

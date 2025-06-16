@@ -1,0 +1,22 @@
+---
+title: "Applying Database Migrations"
+description: "The project comes with a set of pre-existing database migrations. Once you have linked your local project to your Supabase project, you must apply these migrations to set up your database schema correctly."
+---
+
+## Applying Existing Migrations
+
+To apply all existing migrations to your remote Supabase database, run the following command from your project's root directory:
+
+```bash
+supabase db push
+```
+
+The Supabase CLI will connect to your remote database and execute all the migration files located in the `supabase/migrations` directory that have not yet been applied.
+
+This command ensures that your database schema is correctly set up according to the base application's requirements.
+
+**Important:** You should not need to create new migrations or edit existing ones for the initial setup. The necessary schema is already defined in the existing migration files.
+
+## References
+
+- [Supabase Database Migrations Docs](https://supabase.com/docs/guides/database/migrations)

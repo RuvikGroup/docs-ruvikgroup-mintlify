@@ -1,0 +1,56 @@
+---
+title: "Setting up Supabase"
+description: "Configure Supabase for your new branded application"
+---
+
+---
+
+# Creating a New Project
+
+Supabase provides the backend for your application. Here's how to configure it for a new brand.
+
+- Go to [Supabase](https://supabase.com/dashboard) website and sign in.
+- Select the `RuvikGroup` organization at the top left in the dashboard.
+- Click on `New project` to create a new project.
+
+![Create project](/images/supabase/create-project-1.png)
+
+- Fill the form data with project name, database password, database size, and region for your project.
+
+> Make sure `RuvikGroup` organization is selected
+
+![Create project](/images/supabase/create-project-2.png)
+
+- Click on `Create new project` to start creating the project. This can take a couple of minutes.
+
+## Connecting Supabase CLI
+
+To connect your local project to your new Supabase project, you'll need to use the Supabase CLI.
+
+### 1. Log in to the CLI
+
+If you haven't already, log in to your Supabase account:
+
+```bash
+supabase login
+```
+
+This will open a browser window for you to authenticate.
+
+### 2. Link your project
+
+You need your project's reference ID to link it. You can find this in your project's dashboard URL (`https://supabase.com/dashboard/project/<project-ref>`) or in `Project Settings` > `General`.
+
+Run the following command, replacing `<project-ref>` with your actual project reference ID:
+
+```bash
+supabase link --project-ref <project-ref>
+```
+
+The CLI will prompt you for your database password, which you can find in `Project Settings` > `Database`.
+
+After linking, your local setup will be connected to your remote Supabase project, allowing you to manage migrations, deploy Edge Functions, and set secrets.
+
+## References
+
+- [Supabase Project Creation](https://supabase.com/docs/guides/getting-started/tutorials/with-flutter#create-a-project)
