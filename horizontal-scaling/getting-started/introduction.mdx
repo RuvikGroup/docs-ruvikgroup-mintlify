@@ -1,5 +1,5 @@
 ---
-title: Horizontal Scaling with Jubley
+title: "Horizontal Scaling with Jubley"
 description: "Learn how to create new branded applications from the Jubley base"
 ---
 
@@ -14,12 +14,10 @@ Before running any scripts, you need to set up the following third-party service
 ### App Stores
 
 - **Google Play Console**
-
   - Create new application
   - Set up store listing
   - Configure app signing
   - Prepare privacy policy
-
 - **Apple App Store**
   - Create new application
   - Set up App Store Connect
@@ -29,23 +27,17 @@ Before running any scripts, you need to set up the following third-party service
 ### Analytics & Monitoring
 
 - **Firebase**
-
   - Create new project
   - Set up Analytics
   - Configure Crashlytics
-
 - **Sentry**
-
   - Create new project
   - Configure error tracking
   - Set up performance monitoring
-
 - **Mixpanel**
-
   - Create new project
   - Set up event tracking
   - Configure user analytics
-
 - **Google Tag Manager**
   - Create new container
   - Set up tracking tags
@@ -53,12 +45,10 @@ Before running any scripts, you need to set up the following third-party service
 ### Backend & Services
 
 - **Supabase**
-
   - Create new project
   - Set up database
   - Configure authentication
   - Set up storage
-
 - **Algolia**
   - Create new application
   - Set up search indices
@@ -163,10 +153,10 @@ This initiates the brand configuration process. The script will:
 The script will prompt for:
 
 - Brand display name
-- Production URL (default: web.{brand}.com)
-- Staging URL (default: webstaging.{brand}.com)
-- Android package name (default: com.{brand}.app)
-- iOS bundle ID (default: com.{brand}.app)
+- Production URL (default: web.brand.com)
+- Staging URL (default: webstaging.brand.com)
+- Android package name (default: com.brand.app)
+- iOS bundle ID (default: com.brand.app)
 - Brand description
 
 ### 4. Theme Configuration
@@ -187,47 +177,38 @@ The following scripts run in sequence:
    ```bash
    ./scripts/add_product_flavor_0.sh
    ```
-
    - Adds Android product flavors
    - Configures build variants
-
 2. **Asset Management**
 
    ```bash
    ./scripts/copy_brand_assets_1.sh
    ```
-
    - Creates brand-specific asset directories
    - Sets up asset prefixes
-
 3. **Dependencies Update**
 
    ```bash
    ./scripts/update_pubspec_3.sh
    ```
-
    - Updates Flutter dependencies
    - Configures brand-specific packages
-
 4. **YAML Configuration**
 
    ```bash
    ./scripts/update_yaml_configs_4.sh
    ```
-
    - Updates various YAML configurations
    - Sets up brand-specific settings
-
 5. **Firebase Setup**
 
    ```bash
    ./scripts/copy_firebase_config_5.sh
    ```
-
    - Configures Firebase for the new brand
    - Sets up Firebase project settings
-
 6. **iOS Configuration**
+
    ```bash
    ./scripts/copy_ios_config_6.sh
    ./scripts/update_ios_project_7.sh
@@ -262,11 +243,9 @@ After the automated scripts complete, you need to manually update the following:
 #### Assets Configuration
 
 1. Update `assets/config/white_label.yaml`:
-
    - Review and adjust brand-specific settings
    - Update any hardcoded references to the default brand
    - Verify asset paths and prefixes
-
 2. Brand Assets:
    - Replace placeholder images in `assets/{brand}/`
    - Update app icons and splash screens
@@ -276,17 +255,13 @@ After the automated scripts complete, you need to manually update the following:
 #### Platform-Specific Updates
 
 1. Android:
-
    - Update `android/app/src/{brand}/res/` with brand assets
    - Verify `AndroidManifest.xml` for brand-specific settings
    - Check `build.gradle` for correct package name and version
-
 2. iOS:
-
    - Update `ios/Runner/Assets.xcassets` with brand assets
    - Verify `Info.plist` for brand-specific settings
    - Check `project.pbxproj` for correct bundle identifier
-
 3. Web:
    - Update `web/assets/` with brand-specific assets
    - Verify `index.html` for correct meta tags
@@ -295,12 +270,10 @@ After the automated scripts complete, you need to manually update the following:
 #### Code Updates
 
 1. Update brand references in:
-
    - `lib/{brand}/` directory
    - Theme configuration files
    - Localization files
    - Navigation and routing
-
 2. Test brand-specific features:
    - Theme switching
    - Asset loading
@@ -345,3 +318,4 @@ This scaling approach is perfect for:
 - [Brand Configuration →](/jubley/getting-started/brand-config)
 - [Asset Management →](/jubley/guides/assets)
 - [Platform Configuration →](/jubley/guides/platforms)
+- 
