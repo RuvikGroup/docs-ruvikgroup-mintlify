@@ -9,82 +9,134 @@ Jubley serves as the foundation for creating multiple branded applications. Thro
 
 ## Prerequisites
 
-Before running any scripts, you need to set up the following third-party services for your new brand:
+Before running any scripts, you need to set up the following third-party services for your new brand based on the environtment variables we use.
 
-### App Stores
+### App Environment Variables
 
-- **Google Play Console**
-  - Create new application
-  - Set up store listing
-  - Configure app signing
-  - Prepare privacy policy
-- **Apple App Store**
-  - Create new application
-  - Set up App Store Connect
-  - Configure certificates
-  - Prepare store listing
+- Go to the root of the project and create or update `.env` with the new variables:
 
-### Analytics & Monitoring
+```bash
+# FACEBOOK CONSTANTS
+# Find this in your Facebook for Developers
+# dashboard: https://developers.facebook.com/apps/
+FACEBOOK_ID = ''
 
-- **Firebase**
-  - Create new project
-  - Set up Analytics
-  - Configure Crashlytics
-- **Sentry**
-  - Create new project
-  - Configure error tracking
-  - Set up performance monitoring
-- **Mixpanel**
-  - Create new project
-  - Set up event tracking
-  - Configure user analytics
-- **Google Tag Manager**
-  - Create new container
-  - Set up tracking tags
-  - Configure triggers
+# APPLE
+# Find this in your Apple Developer account
+# under "Identifiers" for your Service ID.
+APPLE_CLIENT_ID = ''
 
-### Backend & Services
+# These are configured in your Apple Developer account
+# under the Service ID configuration.
+APPLE_REDIRECT_URI = ''
+APPLE_REDIRECT_URI_WEB = ''
 
-- **Supabase**
-  - Create new project
-  - Set up database
-  - Configure authentication
-  - Set up storage
-- **Algolia**
-  - Create new application
-  - Set up search indices
-  - Configure API keys
-- **n8n**
-  - Set up workflow automation
-  - Configure API keys
+# The Bundle ID of your app, found in
+# your Apple Developer account.
+APPLE_APP_ID = ''
 
-### Maps & Location
+# REVENUECAT CONSTANTS
+# Find these in your RevenueCat dashboard
+# https://app.revenuecat.com/
+REVENUE_CAT_API_KEY_APPLE = ''
+REVENUE_CAT_API_KEY_GOOGLE = ''
 
-- **Mapbox**
-  - Create new project
-  - Set up map styles
-  - Configure access tokens
 
-### Social & Marketing
+# These are the identifiers for your entitlements in RevenueCat.
+REVENUE_CAT_PREMIUM_ENTITLEMENT_ID = ''
+REVENUE_CAT_VIP_ENTITLEMENT_ID = ''
+REVENUE_CAT_API_KEY_WEB = ''
 
-- **Facebook**
-  - Create new app
-  - Configure SDK
-  - Set up app events
 
-### Payments & Subscriptions
+# API CONSTANTS
+# Your application's backend API configuration.
+API_VERSION = ''
+PROD_URL = ''
+STAG_URL = ''
 
-- **RevenueCat**
-  - Create new project
-  - Set up products
-  - Configure subscriptions
 
-### Notifications
+# Your application's web frontend URLs.
+WEB_PROD_URL = ''
+WEB_STAG_URL = ''
 
-- **OneSignal**
-  - Create new project
-  - Configure push notifications
-  - Set up API keys
+
+# APP CONSTANTS
+# The display name for your brand.
+BRAND_NAME = ''
+
+
+# GOOGLE PLACES API & MAPBOX
+# Find this in your Google Cloud Console
+# https://console.cloud.google.com/apis/credentials
+GOOGLE_PLACES_API_KEY = ''
+
+
+# Find this in your Mapbox account dashboard
+# https://account.mapbox.com/
+MAPBOX_ACCESS_TOKEN=''
+
+
+# SENTRY
+# Find these in your Sentry
+# project settings under "Client Keys (DSN)".
+SENTRY_DSN_PROD = ''
+SENTRY_DSN_STAG = ''
+
+
+# GOOGLE_SIGNIN_CLIENT_ID
+# Find these in Google Cloud Console >
+# APIs & Services > Credentials (Web client ID).
+GOOGLE_SIGNIN_CLIENT_ID_STAG = ''
+GOOGLE_SIGNIN_CLIENT_ID_PROD = ''
+
+
+# ALGOLIA
+# Find these in your Algolia Dashboard > API Keys.
+ALGOLIA_KEY_STAG = ''
+ALGOLIA_APP_ID_STAG = ''
+ALGOLIA_APP_ID_PROD = ''
+ALGOLIA_KEY_PROD = ''
+
+
+# GIPHY_API_KEY
+# Get this from the Giphy Developer Portal
+# https://developers.giphy.com/
+GIPHY_API_KEY_PROD = ''
+GIPHY_API_KEY_STAG = ''
+
+
+# ADJUST TOKEN
+# Find this in your Adjust dashboard.
+ADJUST_TOKEN = ''
+
+
+# ONE SIGNAL
+# Find these in your OneSignal dashboard.
+ONE_SIGNAL_STAG_APP_ID = ''
+ONE_SIGNAL_PROD_APP_ID = ''
+
+
+# GOOGLE TAG MANAGER ID
+# Find these in your Google Tag Manager dashboard.
+GOOGLE_TAG_MANAGER_ID_STAG = ''
+GOOGLE_TAG_MANAGER_ID_PROD = ''
+
+
+# MIXPANEL TOKEN
+# Find this in your Mixpanel project settings.
+MIXPANEL_TOKEN = ''
+
+
+# SUPABASE
+# Find these in your Supabase
+# project dashboard > Project Settings > API.
+SUPABASE_URL_STAG = ''
+SUPABASE_ANON_KEY_STAG = ''
+SUPABASE_URL_PROD = ''
+SUPABASE_ANON_KEY_PROD = ''
+
+
+```
 
 ## How It Works
 
@@ -255,88 +307,205 @@ The script automatically updates:
 After completion, verify:
 
 1. Configuration in `assets/config/white_label.yaml`
-2. Generated brand directory at `lib/{brand}`
-3. Product flavors in `android/app/build.gradle`
+2. Product flavors in `android/app/build.gradle`
+3. Assets copies in `assets/<brand_name>`
+4. iOS xconfig files created in `ios/Flutter`
+5. OneSignal entitlement created in `ios/OneSignalNotificationServiceExtension`
+6. Brand name updated in `ios/Runner/Info.plist`
+7. Runners created in `ios/Podfile`
+8. `index.html` updated inside `web` folder
+9. `manifest.json` updated inside `web` folder
+10. `flutter_native_splash.yaml` is updated
+11. `melos.yaml` is updated
+12. `pubspec.yaml` is updated
+13. Remove all configs unrelated with the specific brand (e.g. assets in `pubspec.yaml`, flavors in `build.gradle`)
 
-### 8. Manual Configuration Steps
+## Updating assets
 
-After the automated scripts complete, you need to manually update the following:
+### Images
 
-#### Assets Configuration
+- Go to `assets/<brand_name>/images` and update brand specific assets:
 
-1. Update `assets/config/white_label.yaml`:
-   - Review and adjust brand-specific settings
-   - Update any hardcoded references to the default brand
-   - Verify asset paths and prefixes
-2. Brand Assets:
-   - Replace placeholder images in `assets/{brand}/`
-   - Update app icons and splash screens
-   - Add brand-specific fonts if needed
-   - Configure brand-specific assets in `pubspec.yaml`
+  - `banned_user.webp`
+  - `bg_subscription_gold.webp`
+  - `bg_subscription_premium.webp`
+  - `enable_location.webp`
+  - `female1.webp`
+  - `female2.webp`
+  - `female3.webp`
+  - `magicLink.webp`
+  - `landing_loading.webp`
+  - `logo.webp`
+  - `logo_on_white.webp`
+  - `male1.webp`
+  - `male2.webp`
+  - `male3.webp`
+  - `male4.webp`
+  - `onboarding_chat_1.png`
+  - `onboarding_chat_2.png`
+  - `onboarding_chat_3.png`
+  - `onboarding_discover_1.png`
+  - `onboarding_discover_2.png`
+  - `onboarding_discover_3.png`
+  - `onboarding_image.png`
+  - `onboarding_profile_1.png`
+  - `onboarding_profile_2.png`
+  - `onboarding_profile_3.png`
+  - `onboarding_welcome_1.png`
+  - `onboarding_welcome_2.png`
+  - `onboarding_welcome_3.png`
+  - `empty_image.webp`
+  - `background.webp`
+  - `logo_full.webp`
 
-#### Platform-Specific Updates
+### Vectors
 
-1. Android:
-   - Update `android/app/src/{brand}/res/` with brand assets
-   - Verify `AndroidManifest.xml` for brand-specific settings
-   - Check `build.gradle` for correct package name and version
-2. iOS:
-   - Update `ios/Runner/Assets.xcassets` with brand assets
-   - Verify `Info.plist` for brand-specific settings
-   - Check `project.pbxproj` for correct bundle identifier
-3. Web:
-   - Update `web/assets/` with brand-specific assets
-   - Verify `index.html` for correct meta tags
-   - Check `manifest.json` for brand-specific settings
+- Go to `assets/<brand_name>/vectors` and update brand specific assets:
 
-#### Code Updates
+  - `donwload_android.svg.vec`
+  - `download_ios.svg.vec`
+  - `empty_chats.svg.vec`
+  - `empty_discover.svg.vec`
+  - `empty_gallery.svg.vec`
+  - `empty_match.svg.vec`
+  - `empty_matches.svg.vec`
+  - `empty_messages.svg.vec`
+  - `empty_notications.svg.vec`
+  - `error_bug.svg.vec`
+  - `ic_app_settings.svg.vec`
+  - `ic_attachment.svg.vec`
+  - `ic_billing.svg.vec`
+  - `ic_blog.svg.vec`
+  - `ic_calendar.svg.vec`
+  - `ic_camera.svg.vec`
+  - `ic_chat_active.svg.vec`
+  - `ic_chat_inactive.svg.vec`
+  - `ic_chat_thin.svg.vec`
+  - `ic_credit.svg.vec`
+  - `ic_dislinke.svg.vec`
+  - `ic_explore_active.svg.vec`
+  - `ic_explore_inactive.svg.vec`
+  - `ic_faq.svg.vec`
+  - `ic_filter.svg.vec`
+  - `ic_flower.svg.vec`
+  - `ic_friends.svg.vec`
+  - `ic_gender_female.svg.vec`
+  - `ic_gender_male.svg.vec`
+  - `ic_gif.svg.vec`
+  - `ic_heart_active.svg.vec`
+  - `ic_heart_inactive.svg.vec`
+  - `ic_height.svg.vec`
+  - `ic_help_center.svg.vec`
+  - `ic_incognito.svg.vec`
+  - `ic_info.svg.vec`
+  - `ic_instant_chat.svg.vec`
+  - `ic_language.svg.vec`
+  - `ic_link.svg.vec`
+  - `ic_location_request.svg.vec`
+  - `ic_logout.svg.vec`
+  - `ic_love.svg.vec`
+  - `ic_map_pin.svg.vec`
+  - `ic_map_pin_outline.svg.vec`
+  - `ic_megaphone.svg.vec`
+  - `ic_message.svg.vec`
+  - `ic_more.svg.vec`
+  - `ic_notification_active.svg.vec`
+  - `ic_notification_inactive.svg.vec`
+  - `ic_online_active.svg.vec`
+  - `ic_passport.svg.vec`
+  - `ic_photo.svg.vec`
+  - `ic_preferences.svg.vec`
+  - `ic_premium_search.svg.vec`
+  - `ic_privacy.svg.vec`
+  - `ic_profile_active.svg.vec`
+  - `ic_profile_inactive.svg.vec`
+  - `ic_religion.svg.vec`
+  - `ic_scale.svg.vec`
+  - `ic_search.svg.vec`
+  - `ic_security.svg.vec`
+  - `ic_send.svg.vec`
+  - `ic_settings.svg.vec`
+  - `ic_share.svg.vec`
+  - `ic_sub_gold.svg.vec`
+  - `ic_sub_purple.svg.vec`
+  - `ic_subs_star.svg.vec`
+  - `ic_terms.svg.vec`
+  - `ic_twitter.svg.vec`
+  - `ic_username.svg.vec`
+  - `ic_zap.svg.vec`
+  - `in_app_review.svg.vec`
+  - `missing_page.svg.vec`
+  - `missing_route.svg.vec`
+  - `no_location.svg.vec`
+  - `text_accent.svg.vec`
+  - `text_brush.svg.vec`
+  - `update_app_absract.svg.vec`
+  - `update_app_absract_2.svg.vec`
+  - `wheel.svg.vec`
+  - `wheel_success.svg.vec`
+  - `stopwatch.svg.vec`
+  - `cheers.svg.vec`
+  - `cigarette.svg.vec`
+  - `globe.svg.vec`
+  - `hands_praying.svg.vec`
+  - `heart.svg.vec`
+  - `location_pin.svg.vec`
+  - `person.svg.vec`
+  - `ruler.svg.vec`
+  - `scales.svg.vec`
+  - `translate.svg.vec`
+  - `ic_baby.svg.vec`
+  - `ic_globe.svg.vec`
+  - `ic_cigarette.svg.vec`
+  - `ic_nav_arrow.svg.vec`
+  - `ic_gender_search.svg.vec`
+  - `ic_city.svg.vec`
+  - `maintenance.svg.vec`
 
-1. Update brand references in:
-   - `lib/{brand}/` directory
-   - Theme configuration files
-   - Localization files
-   - Navigation and routing
-2. Test brand-specific features:
-   - Theme switching
-   - Asset loading
-   - Platform-specific functionality
-   - Localization
+# Dependencies & Code Gen
 
-## Use Cases
+This project uses `build_runner` to generate necessary code for features like serialization and dependency injection.
 
-This scaling approach is perfect for:
+First, clean the project and fetch the dependencies:
 
-- **Brand Extensions**: Create new branded versions of your application
-- **Regional Variants**: Deploy region-specific versions
-- **Partner Solutions**: Provide white-labeled versions to partners
-- **Enterprise Deployments**: Create department-specific instances
+```bash
+flutter clean && flutter pub get
+```
 
-## Getting Started
+Then, run the following command from the root of the project to install packages with Melos:
 
-<Steps>
-  <Step title="Setup Services">
-    Create and configure all required third-party services
-  </Step>
-  <Step title="Prepare Base">
-    Ensure you have the latest Jubley base application
-  </Step>
-  <Step title="Run Configuration">
-    Execute the brand configuration script with your brand name
-  </Step>
-  <Step title="Customize Brand">
-    Set up your brand identity and visual design
-  </Step>
-  <Step title="Update Assets">
-    Replace placeholder assets with brand-specific content
-  </Step>
-  <Step title="Verify Configuration">
-    Test all platform-specific configurations
-  </Step>
-</Steps>
+```bash
+flutter pub run melos bs
+```
 
-## Next Steps
+Then, run the following command from the root of the project to generate the code:
 
-- [Quick Start Guide →](/jubley/getting-started/quickstart)
-- [Brand Configuration →](/jubley/getting-started/brand-config)
-- [Asset Management →](/jubley/guides/assets)
-- [Platform Configuration →](/jubley/guides/platforms)
+```bash
+flutter pub run build_runner build --delete-conflicting-outputs
+```
+
+# Generating Splash Screen
+
+This project uses the `flutter_native_splash` package to create native splash screens for Android, iOS, and Web.
+
+Run the following command from the root of the project to generate the native splash screens for your brand:
+
+```bash
+dart run flutter_native_splash:create
+```
+
+# Generating Launcher Icons
+
+This project uses the `flutter_launcher_icons` package to create app icons for Android and iOS.
+
+Run the following command to generate the launcher icons:
+
+```bash
+dart run flutter_launcher_icons:generate
+```
+
+# Ready to Rock!
+
+You have successfully configured your new brand, set up all the necessary environment variables and third-party services, and generated the required assets and code.
+
+Your new application is now ready to be built, tested, and deployed. Good luck!
