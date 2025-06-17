@@ -102,6 +102,12 @@
             ]
           },
           {
+            "group": "Codemagic",
+            "pages": [
+              "horizontal-scaling/codemagic/codemagic-setup"
+            ]
+          },
+          {
             "group": "Supabase",
             "pages": [
               "horizontal-scaling/supabase/create-project",
