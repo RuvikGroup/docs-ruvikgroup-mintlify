@@ -109,6 +109,7 @@
           {
             "group": "Getting Started",
             "pages": [
+              "horizontal-scaling/initial-setup/index",
               "horizontal-scaling/appstore/appstore",
               "horizontal-scaling/googleplay/googleplaysetup",
               "horizontal-scaling/branding/color-theme",
