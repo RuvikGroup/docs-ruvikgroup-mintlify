@@ -1,0 +1,828 @@
+---
+title: "Brand Setup Guide - Step by Step"
+description: "This guide walks you through setting up a new brand for the application. Follow these steps in order:"
+---
+
+## Phase 1: Initial Setup and Scripts
+
+### Step 1: Prerequisites and Environment Setup
+Before running any scripts, ensure you have set up all required third-party services and collected necessary credentials:
+
+**Required Third-Party Services:**
+- Facebook for Developers account and app
+- Apple Developer account with Service ID configured
+- RevenueCat account with entitlements set up
+- Google Cloud Console with Places API enabled
+- Mapbox account
+- Sentry project
+- Algolia search service
+- Giphy Developer account
+- OneSignal push notification service
+- Google Tag Manager
+- PostHog analytics
+- Supabase project
+
+**Environment Variables Configuration:**
+Create or update `.env.brand` file in the project root with all required variables:
+
+```bash
+# FACEBOOK CONSTANTS
+FACEBOOK_ID = ''
+
+# APPLE
+APPLE_CLIENT_ID = ''
+APPLE_REDIRECT_URI = ''
+APPLE_REDIRECT_URI_WEB = ''
+APPLE_APP_ID = ''
+
+# REVENUECAT CONSTANTS
+REVENUE_CAT_API_KEY_APPLE = ''
+REVENUE_CAT_API_KEY_GOOGLE = ''
+REVENUE_CAT_PREMIUM_ENTITLEMENT_ID = ''
+REVENUE_CAT_VIP_ENTITLEMENT_ID = ''
+REVENUE_CAT_API_KEY_WEB = ''
+
+# API CONSTANTS
+API_VERSION = ''
+PROD_URL = ''
+STAG_URL = ''
+WEB_PROD_URL = ''
+WEB_STAG_URL = ''
+
+# APP CONSTANTS
+BRAND_NAME = ''
+
+# GOOGLE PLACES API & MAPBOX
+GOOGLE_PLACES_API_KEY = ''
+MAPBOX_ACCESS_TOKEN = ''
+
+# SENTRY
+SENTRY_DSN_PROD = ''
+SENTRY_DSN_STAG = ''
+
+# GOOGLE_SIGNIN_CLIENT_ID
+GOOGLE_SIGNIN_CLIENT_ID_STAG = ''
+GOOGLE_SIGNIN_CLIENT_ID_PROD = ''
+
+# ALGOLIA
+ALGOLIA_KEY_STAG = ''
+ALGOLIA_APP_ID_STAG = ''
+ALGOLIA_APP_ID_PROD = ''
+ALGOLIA_KEY_PROD = ''
+
+# GIPHY_API_KEY
+GIPHY_API_KEY_PROD = ''
+GIPHY_API_KEY_STAG = ''
+
+# ONE SIGNAL
+ONE_SIGNAL_STAG_APP_ID = ''
+ONE_SIGNAL_PROD_APP_ID = ''
+
+# GOOGLE TAG MANAGER ID
+GOOGLE_TAG_MANAGER_ID_STAG = ''
+GOOGLE_TAG_MANAGER_ID_PROD = ''
+
+# POSTHOG
+POSTHOG_KEY = ''
+
+# SUPABASE
+SUPABASE_URL_STAG = ''
+SUPABASE_ANON_KEY_STAG = ''
+SUPABASE_URL_PROD = ''
+SUPABASE_ANON_KEY_PROD = ''
+```
+
+### Step 2: Run Brand Configuration Script
+Execute the main configuration script with your brand name:
+
+```bash
+./scripts/configs.sh <brand_name>
+```
+
+**The script will prompt you for:**
+- Brand display name
+- Production URL (default: web.brand.com)
+- Staging URL (default: webstaging.brand.com)
+- Android package name (default: com.brand.app)
+- iOS bundle ID (default: com.brand.app)
+- Brand description
+
+**Theme Configuration:**
+- Primary font (default: Urbanist)
+- Secondary font (default: Hellix)
+- Primary color (default: #4B164C)
+- Secondary color (default: #DD88CF)
+
+**For staging configuration, run with brand name parameter:**
+```bash
+./scripts/copy_firebase_config_5.sh <brand_name_lowercase>
+./scripts/copy_ios_config_6.sh <brand_name_lowercase>
+```
+
+### Step 3: Dependencies and Code Generation
+**Clean and install dependencies:**
+```bash
+flutter clean && flutter pub get
+```
+
+**Install packages with Melos:**
+```bash
+flutter pub run melos bs
+```
+
+**Generate required code:**
+```bash
+flutter pub run build_runner build --delete-conflicting-outputs
+```
+
+### Step 4: Generate Splash Screen
+Create native splash screens for all platforms:
+```bash
+dart run flutter_native_splash:create
+```
+
+### Step 5: Generate Launcher Icons
+Create app icons for Android and iOS:
+```bash
+dart run flutter_launcher_icons:generate
+```
+
+## Phase 2: iOS Configuration
+
+### Step 3: Configure Xcode Settings
+- Create configurations in Xcode for debug, release, and profile
+
+![Create iOS schemes](/images/create-ios-schemes.png)
+
+- Create production-[brandname] and staging-[brandname] schemes in `ios/Runner.xcodeproj/xcshareddata/xcschemes`
+
+![Create iOS schemes](/images/xcschemes.png)
+
+### Step 4: Update iOS Build Settings
+
+#### 4a. Configure Product Bundle Identifiers
+- Select **Runner** in TARGETS
+- Navigate to **Build Settings** → **Packaging** → **Product Bundle Identifier**
+- Configure the bundle identifiers for each build configuration as shown:
+
+![Create iOS schemes](/images/packaging-configs.png)
+
+**Required Bundle ID Configurations:**
+- `Debug-production`: `com.[brandname].app`
+- `Debug-production-[brandname]`: `com.[brandname].app`
+- `Debug-staging`: `com.[brandname].app.staging`
+- `Debug-staging-[brandname]`: `com.[brandname].app.staging`
+- `Profile-production`: `com.[brandname].app`
+- `Profile-staging`: `com.[brandname].app.staging`
+- `Profile-staging-[brandname]`: `com.[brandname].app.staging`
+- `Release-production`: `com.[brandname].app`
+- `Release-production-[brandname]`: `com.[brandname].app`
+- `Release-staging`: `com.[brandname].app.staging`
+- `Release-staging-[brandname]`: `com.[brandname].app.staging`
+
+**Note:** Replace `[brandname]` with your actual brand name (e.g., `pinaflare` as shown in the example).
+
+#### 4b. Configure OneSignal Extension Packaging
+- Select **OneSignalNotificationServiceExtension** target
+- Update the same Bundle Identifier configurations in Build Settings
+- Ensure they match the main app bundle IDs with `.OneSignalNotificationServiceExtension` suffix
+
+![Create iOS schemes](/images/onesignal-packaging-configs.png)
+
+#### 4c. Create Code Signing Entitlements
+- Create brand-specific entitlement files in `ios/Runner/`
+- Files should be named: `Runner-Production-[Brandname].entitlements` and `Runner-Staging-[Brandname].entitlements`
+- Configure the entitlements with the following structure:
+
+![Create iOS schemes](/images/entitlements.png)
+
+**Entitlement File Content Example (`Runner-Production-Pinaflare.entitlements`):**
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>aps-environment</key>
+    <string>development</string>
+    <key>com.apple.developer.applesignin</key>
+    <array>
+        <string>Default</string>
+    </array>
+    <key>com.apple.developer.associated-domains</key>
+    <array>
+        <string>applinks:web.[brandname].com</string>
+    </array>
+    <key>com.apple.security.application-groups</key>
+    <array>
+        <string>group.com.[brandname].app.onesignal</string>
+    </array>
+</dict>
+</plist>
+```
+
+**Key Entitlements Explained:**
+- `aps-environment`: Push notification environment (development/production)
+- `com.apple.developer.applesignin`: Enables Sign in with Apple
+- `com.apple.developer.associated-domains`: Deep linking domains for your brand
+- `com.apple.security.application-groups`: App group for OneSignal notifications
+
+**Note:** Replace `[brandname]` with your actual brand name and update URLs accordingly.
+
+#### 4d. Update Code Signing Settings
+- Select **Runner** target
+- Navigate to **Build Settings** → **Signing** → **Code Signing Entitlements**
+- Configure the entitlement file paths for each build configuration as shown:
+
+![Create iOS schemes](/images/runner-signing-entitlements.png)
+
+**Required Code Signing Entitlements Configuration:**
+
+**Production Configurations:**
+- `Debug-production`: `Runner/Runner-Production.entitlements`
+- `Debug-production-jubley`: `Runner/Runner-Production.entitlements`
+- `Debug-production-[brandname]`: `Runner/Runner-Production-[Brandname].entitlements`
+- `Profile-production`: `Runner/Runner-Production.entitlements`
+- `Release-production`: `Runner/Runner-Production.entitlements`
+- `Release-production-jubley`: `Runner/Runner-Production.entitlements`
+- `Release-production-[brandname]`: `Runner/Runner-Production-[Brandname].entitlements`
+
+**Staging Configurations:**
+- `Debug-staging`: `Runner/Runner-Staging.entitlements`
+- `Debug-staging-jubley`: `Runner/Runner-Staging.entitlements`
+- `Profile-staging`: `Runner/Runner-Staging.entitlements`
+- `Profile-staging-jubley`: `Runner/Runner-Staging.entitlements`
+- `Profile-staging-[brandname]`: `Runner/Runner-Staging-[Brandname].entitlements`
+- `Release-staging`: `Runner/Runner-Staging.entitlements`
+- `Release-staging-jubley`: `Runner/Runner-Staging.entitlements`
+
+**Note:** 
+- Replace `[brandname]` and `[Brandname]` with your actual brand name (e.g., `pinaflare` and `Pinaflare`)
+- Brand-specific configurations use brand-specific entitlement files
+- Generic configurations use the base entitlement files
+
+## Phase 3: Branding and Third-Party Integrations
+
+### Step 5: Update Brand Colors
+- Add tertiary color into `white_label.yaml`
+![Create iOS schemes](/images/tertiary-color.png)
+
+### Step 6: Configure Facebook Integration
+
+#### 6a. Update iOS Facebook Configuration
+- Navigate to `ios/Runner/Info.plist`
+- Update the following Facebook keys with your brand-specific values:
+
+![Create iOS schemes](/images/facebook-info-plist.png)
+
+**Required Facebook Configuration in Info.plist:**
+```xml
+<key>FacebookAppID</key>
+<string>[APP_ID]</string>
+<key>FacebookClientToken</key>
+<string>[CLIENT_TOKEN]</string>
+<key>FacebookDisplayName</key>
+<string>PinaFlare</string>
+```
+
+**Where to find these values:**
+- **FacebookAppID**: Found in your Facebook for Developers dashboard under App Settings → Basic
+- **FacebookClientToken**: Found in Facebook for Developers dashboard under App Settings → Advanced → Client Token
+- **FacebookDisplayName**: Your brand's display name (e.g., "PinaFlare", "YourBrandName")
+
+#### 6b. Update Android Facebook Configuration
+- Navigate to `android/app/src/main/res/values/strings.xml`
+- Update the Facebook configuration with your brand-specific values:
+
+![Create iOS schemes](/images/facebook-strings-xml.png)
+
+**Required Facebook Configuration in strings.xml:**
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="facebook_app_id">[APP_ID]</string>
+    <string name="facebook_client_token">[CLIENT_TOKEN]</string>
+</resources>
+```
+
+**Configuration Details:**
+- **facebook_app_id**: Must match the `FacebookAppID` value from iOS Info.plist
+- **facebook_client_token**: Must match the `FacebookClientToken` value from iOS Info.plist
+- Replace `[APP_ID]` and `[CLIENT_TOKEN]` with the actual values from your Facebook for Developers dashboard
+
+**Important:** Ensure these values are identical to what you configured in the iOS Info.plist to maintain cross-platform consistency.
+
+### Step 7: Configure Google Services
+
+#### Configure Google Maps API Key for Android
+- Navigate to `android/app/src/main/AndroidManifest.xml`
+- Update the Google Maps API key meta-data tag:
+
+![Create iOS schemes](/images/google-android-maps-key.png)
+
+**Required Google Maps Configuration in AndroidManifest.xml:**
+```xml
+<application>
+    <!-- Other application configurations -->
+    
+    <meta-data
+        android:name="com.google.android.geo.API_KEY"
+        android:value="[GOOGLE_MAPS_API_KEY]"/>
+        
+    <!-- Other meta-data tags -->
+</application>
+```
+
+**Configuration Steps:**
+1. **Locate the meta-data tag** within the `<application>` section
+2. **Replace `[GOOGLE_MAPS_API_KEY]`** with your actual Google Maps API key
+3. **Ensure the key has proper permissions** for your app's package name
+
+**Where to find your Google Maps API Key:**
+- Go to [Google Cloud Console](https://console.cloud.google.com/apis/credentials)
+- Navigate to **APIs & Services** → **Credentials**
+- Use an existing API key or create a new one
+- Ensure **Maps SDK for Android** is enabled for your project
+- Configure API key restrictions for your app's package name (`com.[brandname].app`)
+
+**Important:** This API key enables location services, map display, and geocoding functionality in your Android app.
+
+## Phase 4: Firebase Setup
+
+### Step 8: Create Firebase Project
+#### 8a. Initialize New Firebase Project
+- Go to [Firebase Console](https://console.firebase.google.com/)
+- Click **"Create a project"** or **"Add project"**
+![Firebase Project Creation](/images/firebase-create-project.png)
+- Enter your brand name as the project name (e.g., "PinaFlare")
+
+![Firebase Project Creation](/images/firebase-project-name.png)
+
+#### 8b. Configure Google Analytics
+- Select your analytics location (e.g., "United States")
+- Configure data sharing settings:
+  - ✅ Use default settings for sharing Google Analytics data
+  - ✅ Accept Google Analytics terms
+- Review and accept Firebase terms
+
+![Firebase Analytics Setup](/images/firebase-analytics-config.png)
+
+**Google Analytics Features Enabled:**
+- A/B testing
+- User segmentation & targeting across Firebase products  
+- Breadcrumb logs in Crashlytics
+- Event-based Cloud Functions triggers
+- Free unlimited reporting
+![Firebase Analytics Features](/images/firebase-analytics-features.png)
+
+
+### Step 9: Add Firebase to Flutter App
+#### 9a. Prepare Your Workspace
+![Firebase Analytics Features](/images/firebase-project-created.png)
+Before adding Firebase platforms, ensure you have:
+- **Firebase CLI** installed and logged in (`firebase login`) in the root folder of the project
+
+
+![Firebase Workspace Preparation](/images/firebase-workspace-prep.png)
+
+#### 9b. Install and Configure FlutterFire CLI
+**Install FlutterFire CLI globally:**
+```bash
+dart pub global activate flutterfire_cli
+```
+
+**Configure Firebase for your project:**
+```bash
+flutterfire configure --project=pina-flare -i com.pinaflare.app
+```
+
+This automatically:
+- Registers your per-platform apps with Firebase
+- Adds a `lib/firebase_options.dart` configuration file to your Flutter project
+
+#### 9c. Add Platform Support
+Select the platforms you want to support and configure each platform:
+
+![Firebase Platform Selection](/images/flutterfire-config.png)
+
+**Platform Configuration Steps:**
+
+**1. Android Platform:**
+- Select **Android** platform in the FlutterFire CLI
+- Download `google-services.json` from Firebase Console
+- Place the json file into `android/app/`
+
+**2. iOS Platform:**
+- Select **iOS** platform in the FlutterFire CLI
+- Download `GoogleService-Info.plist` from Firebase Console
+- Place the plist file into:
+  - `ios/config/[brandname]/production/GoogleService-Info.plist`
+  - `ios/config/[brandname]/staging/GoogleService-Info.plist`
+- Update `ios/firebase_app_id_file.json` file with the new Firebase App IDs
+- Update bundle ID inside `target.build_configurations.each` loop in `ios/Podfile` file
+
+**3. Web Platform:**
+- Select **Web** platform in the FlutterFire CLI
+- Web configuration will be automatically generated in `firebase_options.dart`
+
+**Important Notes:**
+- Replace `[brandname]` with your actual brand name (e.g., `pinaflare`)
+- Ensure the bundle IDs match across all platforms:
+  - iOS: `com.<brandname>.app`
+  - Android: `com.<brandname>.app`
+- The automated scripts from Phase 1 should handle the file placement, but verify the files are in the correct locations
+
+### Step 10: Verify Configuration Files
+After running `flutterfire configure`, verify these files were created/updated:
+
+**Generated Files:**
+- `lib/firebase_options.dart` - Firebase configuration for all platforms
+- `android/app/google-services.json` - Android configuration
+- `ios/Runner/GoogleService-Info.plist` - iOS configuration
+- `.firebaserc` - Firebase project configuration
+
+**Important:** The automated scripts from Phase 1 should have already placed these files in the correct locations for your brand-specific configurations.
+
+## Phase 5: Deep Linking and Asset Links
+
+### Step 12: Configure Asset Links
+
+#### 12a. Configure Apple App Site Association
+- Create or update `web/.well-known/apple-app-site-association` file
+- Configure the app ID and URL patterns for iOS deep linking:
+
+![Apple App Site Association](/images/apple-app-site-association.png)
+
+**Apple App Site Association File Structure:**
+```json
+{
+  "applinks": {
+    "details": [
+      {
+        "appID": "[TEAM_ID].com.<brandname>.app",
+        "paths": ["*"]
+      }
+    ]
+  }
+}
+```
+
+**Configuration Details:**
+- **appID**: Format is `[TEAM_ID].[BUNDLE_ID]`
+  - `[TEAM_ID]`: Your Apple Developer Team ID
+  - `com.<brandname>.app`: Your app's bundle identifier
+- **paths**: URL patterns to handle (use `["*"]` for all paths)
+
+**Where to find your Team ID:**
+- Apple Developer Account → Membership → Team ID
+- Or in Xcode → Project Settings → Signing & Capabilities
+
+#### 12b. Configure Android Asset Links
+- Create or update `web/.well-known/assetlinks.json` file
+- Configure the package name and certificate fingerprints for Android deep linking:
+
+![Android Asset Links](/images/assetlinks.png)
+
+**Android Asset Links File Structure:**
+```json
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.<brandname>.app",
+      "sha256_cert_fingerprints": [
+        "[SHA256_FINGERPRINT]"
+      ]
+    }
+  }
+]
+```
+
+**Configuration Details:**
+- **package_name**: Your Android app's package name (must match `android/app/build.gradle`)
+- **sha256_cert_fingerprints**: SHA-256 fingerprints of your app's signing certificates
+
+**How to get SHA-256 fingerprints:**
+
+**From Google Play Console (Required for Asset Links):**
+- Go to Google Play Console → Your App → Setup → App Integrity
+- Copy the SHA-256 certificate fingerprint from "App signing key certificate"
+- **This is the ONLY valid fingerprint for asset links** - Google Play manages app signing
+
+**Important:** The SHA-256 fingerprint MUST come from Google Play Console, not from your local keystore. Google Play uses its own signing key for published apps, so local debug/release certificate fingerprints will not work for deep linking verification.
+
+#### 12c. Deploy Asset Links
+- Place both files in `web/.well-known/` directory:
+  - `web/.well-known/apple-app-site-association` (no file extension)
+  - `web/.well-known/assetlinks.json`
+- Ensure these files are accessible at:
+  - `https://yourdomain.com/.well-known/apple-app-site-association`
+  - `https://yourdomain.com/.well-known/assetlinks.json`
+
+**Important Notes:**
+- Files must be served over HTTPS
+- `apple-app-site-association` file must NOT have a file extension
+- Both files must return `Content-Type: application/json`
+- Test the links after deployment to ensure they're publicly accessible
+
+## Phase 6: Environment and Web Configuration
+
+### Step 13: Update Environment Variables
+- Update all environment variables in `.env.brand` file
+- Ensure all required API keys and credentials from Phase 1 are properly configured
+- Verify staging and production environment variables are correctly set
+
+### Step 14: Configure Web Manifest
+#### 14a. Update Web Manifest File
+- Navigate to `web/manifest.json`
+- Update app description with your brand-specific description
+- Update app name and short name with your brand name
+- Configure theme colors and display settings
+
+#### 14b. Update Web Index HTML
+- Navigate to `web/index.html`
+- Update meta tags and page title
+- Update app-specific keys and configuration
+- Configure brand-specific metadata
+
+#### 14c. Update Web Splash Assets
+- Navigate to `web/splash/` directory
+- Update splash screen assets with brand-specific images
+- Ensure all splash screen sizes are updated for different devices
+
+### Step 15: Update App Metadata
+#### 15a. Update Pubspec Configuration
+- Navigate to `pubspec.yaml`
+- Update app version and build number
+- Update app description with brand-specific content
+- Configure brand-specific dependencies and assets
+
+#### 15b. Verify Asset Configuration
+- Ensure all brand-specific assets are properly referenced in `pubspec.yaml`
+- Remove any unused or conflicting asset references
+- Verify font and image asset paths are correct for your brand
+
+## Phase 7: Android Signing Configuration
+
+### Step 16: Create Android Signing Key
+- Create a new signing key with command:
+  ```bash
+  keytool -genkey -v -keystore [brandname].keystore -storepass <storePassword> -alias <alias> -keypass <keyPassword> -keyalg RSA -keysize 2048 -validity 10000
+  ```
+
+### Step 17: Configure Signing Properties
+- Create a new file from `android/app/key.properties` template with the passwords and alias
+- Update `build.gradle` to use your new file instead of `key.properties`
+![Android Asset Links](/images/build-gradle-key-props.png)
+
+## Phase 8: Firebase Deployment Setup
+
+### Step 18: Configure Firebase Hosting
+- Update `.firebaserc` with your firebase project name
+![Android Asset Links](/images/firebaserc.png)
+- Update the site names in `firebase.json`
+![Android Asset Links](/images/firebase-json.png)
+
+## Phase 9: External Service Configuration
+
+### Step 19: Configure Supabase
+
+#### 19a. Configure Redirect URLs
+- Navigate to your Supabase project dashboard
+- Go to **Authentication** → **URL Configuration**
+- Add your brand domains to Redirect URLs for both staging and production:
+
+![Supabase Redirect URLs](/images/supabase-redirect-urls.png)
+
+**Required Redirect URLs:**
+```
+https://web.[brandname].com
+https://web.[brandname].com?brand=[brandname]
+https://webstaging.[brandname].com
+https://webstaging.[brandname].com?brand=[brandname]
+```
+
+**Example for PinaFlare:**
+- `https://web.pinaflare.com`
+- `https://web.pinaflare.com?brand=pinaflare`
+- `https://webstaging.pinaflare.com` 
+- `https://webstaging.pinaflare.com?brand=pinaflare`
+
+#### 19b. Add Email Templates to Storage
+- Navigate to **Storage** in your Supabase dashboard
+- Go to the **emails** bucket
+- Create the folder structure: `[brandname]/template/`
+- Upload email templates for both languages:
+
+![Supabase Email Templates](/images/supabase-email-templates.png)
+
+**Required Email Template Structure:**
+```
+emails/
+└── [brandname]/
+    └── template/
+        ├── en.html
+        └── th.html
+```
+
+**Example for PinaFlare:**
+```
+emails/
+└── pinaflare/
+    └── template/
+        ├── en.html  (English email template)
+        └── th.html  (Thai email template)
+```
+
+**Template Configuration:**
+- **Copy templates from Jubley brand**: Start with existing templates from `emails/jubley/template/`
+- **Update brand-specific elements**:
+  - Replace brand colors with your brand's color scheme
+  - Update logo and icon URLs to point to your brand assets
+  - Update brand name throughout the templates
+  - Modify any brand-specific messaging or content
+
+**Template Customization Steps:**
+1. **Copy base templates**: Download `en.html` and `th.html` from `emails/jubley/template/`
+2. **Update colors**: Replace Jubley colors with your brand colors (primary, secondary, accent)
+3. **Update asset URLs**: Replace icon and logo URLs with your brand's assets
+4. **Update brand references**: Change "Jubley" to your brand name throughout
+5. **Upload customized templates**: Place updated files in `emails/[brandname]/template/`
+
+**File Format Requirements:**
+- **HTML format**: Proper email markup with inline CSS
+- **Responsive design**: Ensure templates work on mobile and desktop
+- **Asset URLs**: Use absolute URLs for images and icons
+
+### Step 21: Configure Email Service
+
+#### Configure Resend Domain
+- Navigate to your Resend dashboard
+- Go to **Domains** section in the left sidebar
+- Add your brand domain for email sending:
+
+![Resend Domain Configuration](/images/resend-domains.png)
+
+**Domain Configuration Steps:**
+1. **Add Domain**: Click "Add Domain" and enter your brand domain (e.g., `pinaflare.com`)
+2. **Verify Domain**: Follow Resend's DNS verification process
+3. **Configure DNS Records**: Add the required DNS records to your domain provider
+4. **Confirm Verification**: Ensure domain status shows "Verified" (green checkmark)
+
+**Required Domain Format:**
+- Use your brand's root domain (e.g., `pinaflare.com`)
+- Do not include subdomains or protocols (no `https://` or `www.`)
+
+**DNS Verification:**
+- Resend will provide specific DNS records (TXT, CNAME, MX)
+- Add these records to your domain's DNS settings
+- Verification typically takes a few minutes to propagate
+- Domain must show "Verified" status before sending emails
+
+**Important:** Email functionality will not work until the domain is properly verified in Resend.
+
+### Step 22: Configure Build Scripts
+
+#### Update iOS Google Plist Copy Script
+- Navigate to `ios/copy-google-plist.sh`
+- Update the `BRAND_ID` and `ENVIRONMENT` variables for your brand:
+
+![iOS Build Script Configuration](/images/copy-google-plist-script.png)
+
+**Script Configuration:**
+```bash
+#!/bin/bash
+
+BRAND_ID="${BRAND_ID:-pinaflare}"
+# TODO: change to production when deploying to production  
+ENVIRONMENT="${FLUTTER_APP_FLAVOR:-production}"
+```
+
+**Variables to Update:**
+- **BRAND_ID**: Replace `pinaflare` with your brand name (lowercase)
+- **ENVIRONMENT**: Set to `production` for production builds, `staging` for staging builds
+
+**Configuration Examples:**
+```bash
+# For PinaFlare brand
+BRAND_ID="${BRAND_ID:-pinaflare}"
+
+# For your brand (replace 'yourbrand' with your actual brand name)
+BRAND_ID="${BRAND_ID:-yourbrand}"
+```
+
+**Environment Options:**
+- **production**: For production builds and App Store releases
+- **staging**: For staging/development builds and testing
+
+**Purpose of Script:**
+This script automatically copies the correct `GoogleService-Info.plist` file based on:
+- The brand being built (`BRAND_ID`)
+- The environment/flavor being built (`ENVIRONMENT`)
+- It ensures the correct Firebase configuration is used for each brand and environment
+
+**Important:** Update the TODO comment when deploying to production and ensure the ENVIRONMENT variable matches your intended build configuration.
+
+### Step 23: Configure Apple Authentication
+
+#### 23a. Apple Developer Configuration Requirements
+
+![Apple Developer Configuration](/images/apple-developer-config.png)
+
+**Apple Developer Setup Requirements:**
+
+1. **Create App ID**: 
+   - Have an App ID which uniquely identifies the app you are building
+   - You can create a new App ID from the **Identifiers** section in the Apple Developer Console
+   - Use the filter menu in the upper right side to see all App IDs
+   - These usually are a reverse domain name string, for example `com.example.app`
+
+2. **Configure Sign in with Apple**:
+   - Make sure you configure **Sign in with Apple** for the App ID you created or already have
+   - Enable this in the **Capabilities** list for your App ID
+   - At this time Supabase Auth does not support Server-to-Server notification endpoints, so you should leave that setting blank
+   - (In the past App IDs were referred to as *bundle IDs*)
+
+3. **Register App IDs in Supabase**:
+   - Register all of the App IDs that will be using your Supabase project
+   - Add them to the **Apple provider configuration** in the Supabase dashboard under **Client IDs**
+
+**Apple Secret Key Location:**
+- Apple Developer Account → **Certificates, Identifiers & Profiles** → **Keys**
+- Generate or use existing key for Sign in with Apple service
+- Download the .p8 key file and use the key content
+
+**Important Notes:**
+- This secret is required for server-side Apple authentication verification
+- The secret will be available to your Supabase Edge Functions
+- Keep the secret secure and never expose it in client-side code
+- You can add multiple secrets if needed using "Add another"
+
+
+#### 23b. Configure Apple Authentication in Supabase
+- Navigate to your Supabase project dashboard
+- Go to **Authentication** → **Providers**
+- Find and configure the **Apple** provider:
+
+![Supabase Apple Authentication](/images/apple-signin-config.png)
+
+**Supabase Apple Provider Configuration:**
+- **Enable Sign in with Apple**: Toggle switch must be ON
+- **Client IDs**: Add your brand's bundle identifiers for native app authentication
+
+**Client IDs Format:**
+```
+com.[brandname].app.staging,com.[brandname].app
+```
+
+**Required Bundle IDs to Add:**
+- **Production**: `com.[brandname].app`
+- **Staging**: `com.[brandname].app.staging` (if using staging builds)
+- **Base Jubley**: `com.jubley.app` (keep existing for compatibility)
+
+**Configuration Steps:**
+1. **Enable the toggle**: Turn ON "Enable Sign in with Apple" in Supabase
+2. **Add Client IDs**: Enter comma-separated list of your app's bundle IDs
+3. **Include all environments**: Production, staging, and test configurations
+4. **Save configuration**: Apply changes in Supabase to activate Apple authentication
+
+**Example for PinaFlare:**
+```
+com.jubley.app.staging,com.pinaflare.app,com.pinaflare.app.staging
+```
+
+**Purpose:** This configuration tells Supabase which iOS/macOS bundle IDs are allowed to authenticate using Apple Sign in from native applications.
+
+#### 23c. Configure Apple Secret Key in Supabase
+- Navigate to your Supabase project dashboard
+- Go to **Edge Functions** → **Secrets**
+- Add the Apple Secret Key for OAuth authentication:
+
+![Supabase Edge Function Secrets](/images/supabase-apple-secret.png)
+
+**Edge Function Secrets Configuration:**
+1. **Click "Add new secrets"**
+2. **Enter Key**: `AUTH_EXTERNAL_APPLE_SECRET`
+3. **Enter Value**: Your Apple-generated secret key
+4. **Click "Save"** to apply the secret
+
+**Secret Configuration Details:**
+- **Key name**: `AUTH_EXTERNAL_APPLE_SECRET` (exact spelling required)
+- **Value**: Apple Secret Key from your Apple Developer account
+- **Scope**: Edge Functions (for server-side Apple authentication)
+- **Security**: Value will be masked after saving
+
+
+---
+
+## Completion Checklist
+
+Once you've completed all steps, verify:
+- [ ] All scripts have run successfully
+- [ ] iOS builds work for debug, release, and profile
+- [ ] Android builds work with proper signing
+- [ ] Firebase is properly configured for all platforms
+- [ ] Deep linking works correctly
+- [ ] All environment variables are set
+- [ ] Third-party integrations (Facebook, Google) are working
+- [ ] Apple and email authentication are configured 

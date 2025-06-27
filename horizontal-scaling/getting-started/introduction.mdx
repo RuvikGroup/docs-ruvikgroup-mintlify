@@ -3,13 +3,19 @@ title: "Horizontal Scaling with Jubley"
 description: "Learn how to create new branded applications from the Jubley base"
 ---
 
-# Horizontal Scaling
-
 Jubley serves as the foundation for creating multiple branded applications. Through a series of automated scripts, you can transform the base Jubley application into a completely new branded experience, each with its own unique identity and configuration.
 
-## Prerequisites
+# Prerequisites
 
 Before running any scripts, you need to set up the following third-party services for your new brand based on the environtment variables we use.
+Ensure you have:
+
+1. Created all required third-party service accounts
+2. Collected all necessary API keys and credentials
+3. Set up app store listings
+4. Configured analytics and monitoring
+5. Set up backend services
+6. Prepared payment and subscription systems
 
 ### App Environment Variables
 
@@ -179,32 +185,13 @@ The automated scripts handle:
 
 ## Step-by-Step Process
 
-### 1. Service Setup
-
-Before running any scripts, ensure you have:
-
-1. Created all required third-party service accounts
-2. Collected all necessary API keys and credentials
-3. Set up app store listings
-4. Configured analytics and monitoring
-5. Set up backend services
-6. Prepared payment and subscription systems
-
-### 2. Initial Setup
+### Running the script
 
 Run the configuration script with your brand name:
 
 ```bash
 ./scripts/configs.sh <brand_name>
 ```
-
-This initiates the brand configuration process. The script will:
-
-- Validate the brand name
-- Check for existing configurations
-- Prepare for the transformation
-
-### 3. Brand Configuration
 
 The script will prompt for:
 
@@ -215,7 +202,7 @@ The script will prompt for:
 - iOS bundle ID (default: com.brand.app)
 - Brand description
 
-### 4. Theme Configuration
+### Theme Configuration
 
 Configure the visual identity:
 
@@ -224,7 +211,7 @@ Configure the visual identity:
 - Primary color (default: #4B164C)
 - Secondary color (default: #DD88CF)
 
-### 5. Automated Script Execution
+### Automated Script Execution
 
 The following scripts run in sequence:
 
@@ -283,7 +270,7 @@ The following scripts run in sequence:
    - Sets up iOS-specific configurations
    - Updates iOS project settings
 
-### 6. Web Configuration
+### Web Configuration
 
 The script automatically updates:
 
@@ -295,7 +282,7 @@ The script automatically updates:
   - Page title
   - Mobile web app title
 
-### 7. Verification Steps
+### Verification Steps
 
 After completion, verify:
 

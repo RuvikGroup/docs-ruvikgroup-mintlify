@@ -94,6 +94,7 @@
           {
             "group": "Getting Started",
             "pages": [
+              "horizontal-scaling/getting-started/brand-setup-guide",
               "horizontal-scaling/getting-started/introduction",
               "horizontal-scaling/appstore/appstore",
               "horizontal-scaling/googleplay/googleplaysetup",
