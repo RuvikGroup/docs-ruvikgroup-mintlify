@@ -1,0 +1,264 @@
+---
+title: "External Service Configuration"
+description: "Configure Supabase, email services, Apple authentication, and build scripts"
+---
+
+## External Service Configuration
+
+### Step 19: Configure Supabase
+
+#### 19a. Configure Redirect URLs
+
+- Navigate to your Supabase project dashboard
+- Go to **Authentication** → **URL Configuration**
+- Add your brand domains to Redirect URLs for both staging and production:
+
+![Supabase Redirect URLs](/images/supabase-redirect-urls.png)
+
+**Required Redirect URLs:**
+
+```
+https://web.[brandname].com
+https://web.[brandname].com?brand=[brandname]
+https://webstaging.[brandname].com
+https://webstaging.[brandname].com?brand=[brandname]
+```
+
+**Example for PinaFlare:**
+
+- `https://web.pinaflare.com`
+- `https://web.pinaflare.com?brand=pinaflare`
+- `https://webstaging.pinaflare.com`
+- `https://webstaging.pinaflare.com?brand=pinaflare`
+
+#### 19b. Add Email Templates to Storage
+
+- Navigate to **Storage** in your Supabase dashboard
+- Go to the **emails** bucket
+- Create the folder structure: `[brandname]/template/`
+- Upload email templates for both languages:
+
+![Supabase Email Templates](/images/supabase-email-templates.png)
+
+**Required Email Template Structure:**
+
+```
+emails/
+└── [brandname]/
+    └── template/
+        ├── en.html
+        └── th.html
+```
+
+**Example for PinaFlare:**
+
+```
+emails/
+└── pinaflare/
+    └── template/
+        ├── en.html  (English email template)
+        └── th.html  (Thai email template)
+```
+
+**Template Configuration:**
+
+- **Copy templates from Jubley brand**: Start with existing templates from `emails/jubley/template/`
+- **Update brand-specific elements**:
+  - Replace brand colors with your brand's color scheme
+  - Update logo and icon URLs to point to your brand assets
+  - Update brand name throughout the templates
+  - Modify any brand-specific messaging or content
+
+**Template Customization Steps:**
+
+1. **Copy base templates**: Download `en.html` and `th.html` from `emails/jubley/template/`
+2. **Update colors**: Replace Jubley colors with your brand colors (primary, secondary, accent)
+3. **Update asset URLs**: Replace icon and logo URLs with your brand's assets
+4. **Update brand references**: Change "Jubley" to your brand name throughout
+5. **Upload customized templates**: Place updated files in `emails/[brandname]/template/`
+
+**File Format Requirements:**
+
+- **HTML format**: Proper email markup with inline CSS
+- **Responsive design**: Ensure templates work on mobile and desktop
+- **Asset URLs**: Use absolute URLs for images and icons
+
+### Step 21: Configure Email Service
+
+#### Configure Resend Domain
+
+- Navigate to your Resend dashboard
+- Go to **Domains** section in the left sidebar
+- Add your brand domain for email sending:
+
+![Resend Domain Configuration](/images/resend-domains.png)
+
+**Domain Configuration Steps:**
+
+1. **Add Domain**: Click "Add Domain" and enter your brand domain (e.g., `pinaflare.com`)
+2. **Verify Domain**: Follow Resend's DNS verification process
+3. **Configure DNS Records**: Add the required DNS records to your domain provider
+4. **Confirm Verification**: Ensure domain status shows "Verified" (green checkmark)
+
+**Required Domain Format:**
+
+- Use your brand's root domain (e.g., `pinaflare.com`)
+- Do not include subdomains or protocols (no `https://` or `www.`)
+
+**DNS Verification:**
+
+- Resend will provide specific DNS records (TXT, CNAME, MX)
+- Add these records to your domain's DNS settings
+- Verification typically takes a few minutes to propagate
+- Domain must show "Verified" status before sending emails
+
+**Important:** Email functionality will not work until the domain is properly verified in Resend.
+
+### Step 22: Configure Build Scripts
+
+#### Update iOS Google Plist Copy Script
+
+- Navigate to `ios/copy-google-plist.sh`
+- Update the `BRAND_ID` and `ENVIRONMENT` variables for your brand:
+
+![iOS Build Script Configuration](/images/copy-google-plist-script.png)
+
+**Script Configuration:**
+
+```bash
+#!/bin/bash
+
+BRAND_ID="${BRAND_ID:-pinaflare}"
+# TODO: change to production when deploying to production
+ENVIRONMENT="${FLUTTER_APP_FLAVOR:-production}"
+```
+
+**Variables to Update:**
+
+- **BRAND_ID**: Replace `pinaflare` with your brand name (lowercase)
+- **ENVIRONMENT**: Set to `production` for production builds, `staging` for staging builds
+
+**Configuration Examples:**
+
+```bash
+# For PinaFlare brand
+BRAND_ID="${BRAND_ID:-pinaflare}"
+
+# For your brand (replace 'yourbrand' with your actual brand name)
+BRAND_ID="${BRAND_ID:-yourbrand}"
+```
+
+**Environment Options:**
+
+- **production**: For production builds and App Store releases
+- **staging**: For staging/development builds and testing
+
+**Purpose of Script:**
+This script automatically copies the correct `GoogleService-Info.plist` file based on:
+
+- The brand being built (`BRAND_ID`)
+- The environment/flavor being built (`ENVIRONMENT`)
+- It ensures the correct Firebase configuration is used for each brand and environment
+
+**Important:** Update the TODO comment when deploying to production and ensure the ENVIRONMENT variable matches your intended build configuration.
+
+### Step 23: Configure Apple Authentication
+
+#### 23a. Apple Developer Configuration Requirements
+
+![Apple Developer Configuration](/images/apple-developer-config.png)
+
+**Apple Developer Setup Requirements:**
+
+1. **Create App ID**:
+
+   - Have an App ID which uniquely identifies the app you are building
+   - You can create a new App ID from the **Identifiers** section in the Apple Developer Console
+   - Use the filter menu in the upper right side to see all App IDs
+   - These usually are a reverse domain name string, for example `com.example.app`
+
+2. **Configure Sign in with Apple**:
+
+   - Make sure you configure **Sign in with Apple** for the App ID you created or already have
+   - Enable this in the **Capabilities** list for your App ID
+   - At this time Supabase Auth does not support Server-to-Server notification endpoints, so you should leave that setting blank
+   - (In the past App IDs were referred to as _bundle IDs_)
+
+3. **Register App IDs in Supabase**:
+   - Register all of the App IDs that will be using your Supabase project
+   - Add them to the **Apple provider configuration** in the Supabase dashboard under **Client IDs**
+
+**Apple Secret Key Location:**
+
+- Apple Developer Account → **Certificates, Identifiers & Profiles** → **Keys**
+- Generate or use existing key for Sign in with Apple service
+- Download the .p8 key file and use the key content
+
+**Important Notes:**
+
+- This secret is required for server-side Apple authentication verification
+- The secret will be available to your Supabase Edge Functions
+- Keep the secret secure and never expose it in client-side code
+- You can add multiple secrets if needed using "Add another"
+
+#### 23b. Configure Apple Authentication in Supabase
+
+- Navigate to your Supabase project dashboard
+- Go to **Authentication** → **Providers**
+- Find and configure the **Apple** provider:
+
+![Supabase Apple Authentication](/images/apple-signin-config.png)
+
+**Supabase Apple Provider Configuration:**
+
+- **Enable Sign in with Apple**: Toggle switch must be ON
+- **Client IDs**: Add your brand's bundle identifiers for native app authentication
+
+**Client IDs Format:**
+
+```
+com.[brandname].app.staging,com.[brandname].app
+```
+
+**Required Bundle IDs to Add:**
+
+- **Production**: `com.[brandname].app`
+- **Staging**: `com.[brandname].app.staging` (if using staging builds)
+- **Base Jubley**: `com.jubley.app` (keep existing for compatibility)
+
+**Configuration Steps:**
+
+1. **Enable the toggle**: Turn ON "Enable Sign in with Apple" in Supabase
+2. **Add Client IDs**: Enter comma-separated list of your app's bundle IDs
+3. **Include all environments**: Production, staging, and test configurations
+4. **Save configuration**: Apply changes in Supabase to activate Apple authentication
+
+**Example for PinaFlare:**
+
+```
+com.jubley.app.staging,com.pinaflare.app,com.pinaflare.app.staging
+```
+
+**Purpose:** This configuration tells Supabase which iOS/macOS bundle IDs are allowed to authenticate using Apple Sign in from native applications.
+
+#### 23c. Configure Apple Secret Key in Supabase
+
+- Navigate to your Supabase project dashboard
+- Go to **Edge Functions** → **Secrets**
+- Add the Apple Secret Key for OAuth authentication:
+
+![Supabase Edge Function Secrets](/images/supabase-apple-secret.png)
+
+**Edge Function Secrets Configuration:**
+
+1. **Click "Add new secrets"**
+2. **Enter Key**: `AUTH_EXTERNAL_APPLE_SECRET`
+3. **Enter Value**: Your Apple-generated secret key
+4. **Click "Save"** to apply the secret
+
+**Secret Configuration Details:**
+
+- **Key name**: `AUTH_EXTERNAL_APPLE_SECRET` (exact spelling required)
+- **Value**: Apple Secret Key from your Apple Developer account
+- **Scope**: Edge Functions (for server-side Apple authentication)
+- **Security**: Value will be masked after saving

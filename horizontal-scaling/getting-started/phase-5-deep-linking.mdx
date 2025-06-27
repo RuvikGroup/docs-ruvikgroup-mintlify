@@ -1,0 +1,95 @@
+---
+title: "Deep Linking and Asset Links"
+description: "Configure Apple App Site Association and Android Asset Links for deep linking"
+---
+
+## Deep Linking and Asset Links
+
+### Step 12: Configure Asset Links
+
+#### 12a. Configure Apple App Site Association
+
+- Create or update `web/.well-known/apple-app-site-association` file
+- Configure the app ID and URL patterns for iOS deep linking:
+
+![Apple App Site Association](/images/apple-app-site-association.png)
+
+**Apple App Site Association File Structure:**
+
+```json
+{
+  "applinks": {
+    "details": [
+      {
+        "appID": "[TEAM_ID].com.<brandname>.app",
+        "paths": ["*"]
+      }
+    ]
+  }
+}
+```
+
+**Configuration Details:**
+
+- **appID**: Format is `[TEAM_ID].[BUNDLE_ID]`
+  - `[TEAM_ID]`: Your Apple Developer Team ID
+  - `com.<brandname>.app`: Your app's bundle identifier
+- **paths**: URL patterns to handle (use `["*"]` for all paths)
+
+**Where to find your Team ID:**
+
+- Apple Developer Account → Membership → Team ID
+- Or in Xcode → Project Settings → Signing & Capabilities
+
+#### 12b. Configure Android Asset Links
+
+- Create or update `web/.well-known/assetlinks.json` file
+- Configure the package name and certificate fingerprints for Android deep linking:
+
+![Android Asset Links](/images/assetlinks.png)
+
+**Android Asset Links File Structure:**
+
+```json
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.<brandname>.app",
+      "sha256_cert_fingerprints": ["[SHA256_FINGERPRINT]"]
+    }
+  }
+]
+```
+
+**Configuration Details:**
+
+- **package_name**: Your Android app's package name (must match `android/app/build.gradle`)
+- **sha256_cert_fingerprints**: SHA-256 fingerprints of your app's signing certificates
+
+**How to get SHA-256 fingerprints:**
+
+**From Google Play Console (Required for Asset Links):**
+
+- Go to Google Play Console → Your App → Setup → App Integrity
+- Copy the SHA-256 certificate fingerprint from "App signing key certificate"
+- **This is the ONLY valid fingerprint for asset links** - Google Play manages app signing
+
+**Important:** The SHA-256 fingerprint MUST come from Google Play Console, not from your local keystore. Google Play uses its own signing key for published apps, so local debug/release certificate fingerprints will not work for deep linking verification.
+
+#### 12c. Deploy Asset Links
+
+- Place both files in `web/.well-known/` directory:
+  - `web/.well-known/apple-app-site-association` (no file extension)
+  - `web/.well-known/assetlinks.json`
+- Ensure these files are accessible at:
+  - `https://yourdomain.com/.well-known/apple-app-site-association`
+  - `https://yourdomain.com/.well-known/assetlinks.json`
+
+**Important Notes:**
+
+- Files must be served over HTTPS
+- `apple-app-site-association` file must NOT have a file extension
+- Both files must return `Content-Type: application/json`
+- Test the links after deployment to ensure they're publicly accessible

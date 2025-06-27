@@ -92,10 +92,23 @@
         "tab": "Horizontal Scaling",
         "groups": [
           {
+            "group": "Brand Setup Guide",
+            "pages": [
+              "horizontal-scaling/getting-started/phase-1-initial-setup",
+              "horizontal-scaling/getting-started/phase-2-ios-configuration",
+              "horizontal-scaling/getting-started/phase-3-branding-third-party",
+              "horizontal-scaling/getting-started/phase-4-firebase-setup",
+              "horizontal-scaling/getting-started/phase-5-deep-linking",
+              "horizontal-scaling/getting-started/phase-6-environment-web",
+              "horizontal-scaling/getting-started/phase-7-android-signing",
+              "horizontal-scaling/getting-started/phase-8-firebase-deployment",
+              "horizontal-scaling/getting-started/phase-9-external-services",
+              "horizontal-scaling/getting-started/completion-checklist"
+            ]
+          },
+          {
             "group": "Getting Started",
             "pages": [
-              "horizontal-scaling/getting-started/brand-setup-guide",
-              "horizontal-scaling/getting-started/introduction",
               "horizontal-scaling/appstore/appstore",
               "horizontal-scaling/googleplay/googleplaysetup",
               "horizontal-scaling/branding/color-theme",

@@ -1,0 +1,19 @@
+---
+title: "Android Signing Configuration"
+description: "Create Android signing keys and configure signing properties"
+---
+
+## Android Signing Configuration
+
+### Step 16: Create Android Signing Key
+
+- Create a new signing key with command:
+  ```bash
+  keytool -genkey -v -keystore [brandname].keystore -storepass <storePassword> -alias <alias> -keypass <keyPassword> -keyalg RSA -keysize 2048 -validity 10000
+  ```
+
+### Step 17: Configure Signing Properties
+
+- Create a new file from `android/app/key.properties` template with the passwords and alias
+- Update `build.gradle` to use your new file instead of `key.properties`
+  ![Android Asset Links](/images/build-gradle-key-props.png)

@@ -1,0 +1,116 @@
+---
+title: "Firebase Setup"
+description: "Create Firebase project, configure platforms, and set up FlutterFire"
+---
+
+## Firebase Setup
+
+### Step 8: Create Firebase Project
+
+#### 8a. Initialize New Firebase Project
+
+- Go to [Firebase Console](https://console.firebase.google.com/)
+- Click **"Create a project"** or **"Add project"**
+  ![Firebase Project Creation](/images/firebase-create-project.png)
+- Enter your brand name as the project name (e.g., "PinaFlare")
+
+![Firebase Project Creation](/images/firebase-project-name.png)
+
+#### 8b. Configure Google Analytics
+
+- Select your analytics location (e.g., "United States")
+- Configure data sharing settings:
+  - ✅ Use default settings for sharing Google Analytics data
+  - ✅ Accept Google Analytics terms
+- Review and accept Firebase terms
+
+![Firebase Analytics Setup](/images/firebase-analytics-config.png)
+
+**Google Analytics Features Enabled:**
+
+- A/B testing
+- User segmentation & targeting across Firebase products
+- Breadcrumb logs in Crashlytics
+- Event-based Cloud Functions triggers
+- Free unlimited reporting
+  ![Firebase Analytics Features](/images/firebase-analytics-features.png)
+
+### Step 9: Add Firebase to Flutter App
+
+#### 9a. Prepare Your Workspace
+
+![Firebase Analytics Features](/images/firebase-project-created.png)
+Before adding Firebase platforms, ensure you have:
+
+- **Firebase CLI** installed and logged in (`firebase login`) in the root folder of the project
+
+![Firebase Workspace Preparation](/images/firebase-workspace-prep.png)
+
+#### 9b. Install and Configure FlutterFire CLI
+
+**Install FlutterFire CLI globally:**
+
+```bash
+dart pub global activate flutterfire_cli
+```
+
+**Configure Firebase for your project:**
+
+```bash
+flutterfire configure --project=pina-flare -i com.pinaflare.app
+```
+
+This automatically:
+
+- Registers your per-platform apps with Firebase
+- Adds a `lib/firebase_options.dart` configuration file to your Flutter project
+
+#### 9c. Add Platform Support
+
+Select the platforms you want to support and configure each platform:
+
+![Firebase Platform Selection](/images/flutterfire-config.png)
+
+**Platform Configuration Steps:**
+
+**1. Android Platform:**
+
+- Select **Android** platform in the FlutterFire CLI
+- Download `google-services.json` from Firebase Console
+- Place the json file into `android/app/`
+
+**2. iOS Platform:**
+
+- Select **iOS** platform in the FlutterFire CLI
+- Download `GoogleService-Info.plist` from Firebase Console
+- Place the plist file into:
+  - `ios/config/[brandname]/production/GoogleService-Info.plist`
+  - `ios/config/[brandname]/staging/GoogleService-Info.plist`
+- Update `ios/firebase_app_id_file.json` file with the new Firebase App IDs
+- Update bundle ID inside `target.build_configurations.each` loop in `ios/Podfile` file
+
+**3. Web Platform:**
+
+- Select **Web** platform in the FlutterFire CLI
+- Web configuration will be automatically generated in `firebase_options.dart`
+
+**Important Notes:**
+
+- Replace `[brandname]` with your actual brand name (e.g., `pinaflare`)
+- Ensure the bundle IDs match across all platforms:
+  - iOS: `com.<brandname>.app`
+  - Android: `com.<brandname>.app`
+- The automated scripts from Phase 1 should handle the file placement, but verify the files are in the correct locations
+
+### Step 10: Verify Configuration Files
+
+After running `flutterfire configure`, verify these files were created/updated:
+
+**Generated Files:**
+
+- `lib/firebase_options.dart` - Firebase configuration for all platforms
+- `android/app/google-services.json` - Android configuration
+- `ios/Runner/GoogleService-Info.plist` - iOS configuration
+- `.firebaserc` - Firebase project configuration
+
+**Important:** The automated scripts from Phase 1 should have already placed these files in the correct locations for your brand-specific configurations.

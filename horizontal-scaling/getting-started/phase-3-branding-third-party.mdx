@@ -1,0 +1,101 @@
+---
+title: "Branding and Third-Party Integrations"
+description: "Configure brand colors, Facebook integration, and Google services"
+---
+
+## Branding and Third-Party Integrations
+
+### Step 5: Update Brand Colors
+
+- Add tertiary color into `white_label.yaml`
+  ![Create iOS schemes](/images/tertiary-color.png)
+
+### Step 6: Configure Facebook Integration
+
+#### 6a. Update iOS Facebook Configuration
+
+- Navigate to `ios/Runner/Info.plist`
+- Update the following Facebook keys with your brand-specific values:
+
+![Create iOS schemes](/images/facebook-info-plist.png)
+
+**Required Facebook Configuration in Info.plist:**
+
+```xml
+<key>FacebookAppID</key>
+<string>[APP_ID]</string>
+<key>FacebookClientToken</key>
+<string>[CLIENT_TOKEN]</string>
+<key>FacebookDisplayName</key>
+<string>PinaFlare</string>
+```
+
+**Where to find these values:**
+
+- **FacebookAppID**: Found in your Facebook for Developers dashboard under App Settings → Basic
+- **FacebookClientToken**: Found in Facebook for Developers dashboard under App Settings → Advanced → Client Token
+- **FacebookDisplayName**: Your brand's display name (e.g., "PinaFlare", "YourBrandName")
+
+#### 6b. Update Android Facebook Configuration
+
+- Navigate to `android/app/src/main/res/values/strings.xml`
+- Update the Facebook configuration with your brand-specific values:
+
+![Create iOS schemes](/images/facebook-strings-xml.png)
+
+**Required Facebook Configuration in strings.xml:**
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="facebook_app_id">[APP_ID]</string>
+    <string name="facebook_client_token">[CLIENT_TOKEN]</string>
+</resources>
+```
+
+**Configuration Details:**
+
+- **facebook_app_id**: Must match the `FacebookAppID` value from iOS Info.plist
+- **facebook_client_token**: Must match the `FacebookClientToken` value from iOS Info.plist
+- Replace `[APP_ID]` and `[CLIENT_TOKEN]` with the actual values from your Facebook for Developers dashboard
+
+**Important:** Ensure these values are identical to what you configured in the iOS Info.plist to maintain cross-platform consistency.
+
+### Step 7: Configure Google Services
+
+#### Configure Google Maps API Key for Android
+
+- Navigate to `android/app/src/main/AndroidManifest.xml`
+- Update the Google Maps API key meta-data tag:
+
+![Create iOS schemes](/images/google-android-maps-key.png)
+
+**Required Google Maps Configuration in AndroidManifest.xml:**
+
+```xml
+<application>
+    <!-- Other application configurations -->
+
+    <meta-data
+        android:name="com.google.android.geo.API_KEY"
+        android:value="[GOOGLE_MAPS_API_KEY]"/>
+
+    <!-- Other meta-data tags -->
+</application>
+```
+
+**Configuration Steps:**
+
+1. **Locate the meta-data tag** within the `<application>` section
+2. **Replace `[GOOGLE_MAPS_API_KEY]`** with your actual Google Maps API key
+3. **Ensure the key has proper permissions** for your app's package name
+
+**Where to find your Google Maps API Key:**
+
+- Go to [Google Cloud Console](https://console.cloud.google.com/apis/credentials)
+- Navigate to **APIs & Services** → **Credentials**
+- Use an existing API key or create a new one
+- Ensure **Maps SDK for Android** is enabled for your project
+- Configure API key restrictions for your app's package name (`com.[brandname].app`)
+
+**Important:** This API key enables location services, map display, and geocoding functionality in your Android app.

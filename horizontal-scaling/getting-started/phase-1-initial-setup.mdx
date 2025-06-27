@@ -1,0 +1,308 @@
+---
+title: "Initial Setup and Scripts"
+description: "Prerequisites, environment setup, and running brand configuration scripts"
+---
+
+## Initial Setup and Scripts
+
+### Step 1: Prerequisites and Environment Setup
+
+Before running any scripts, ensure you have set up all required third-party services and collected necessary credentials:
+
+**Required Third-Party Services:**
+
+- Facebook for Developers account and app
+- Apple Developer account with Service ID configured
+- RevenueCat account with entitlements set up
+- Google Cloud Console with Places API enabled
+- Mapbox account
+- Sentry project
+- Algolia search service
+- Giphy Developer account
+- OneSignal push notification service
+- Google Tag Manager
+- PostHog analytics
+- Supabase project
+
+**Environment Variables Configuration:**
+Create or update `.env.brand` file in the project root with all required variables:
+
+```bash
+# FACEBOOK CONSTANTS
+FACEBOOK_ID = ''
+
+# APPLE
+APPLE_CLIENT_ID = ''
+APPLE_REDIRECT_URI = ''
+APPLE_REDIRECT_URI_WEB = ''
+APPLE_APP_ID = ''
+
+# REVENUECAT CONSTANTS
+REVENUE_CAT_API_KEY_APPLE = ''
+REVENUE_CAT_API_KEY_GOOGLE = ''
+REVENUE_CAT_PREMIUM_ENTITLEMENT_ID = ''
+REVENUE_CAT_VIP_ENTITLEMENT_ID = ''
+REVENUE_CAT_API_KEY_WEB = ''
+
+# API CONSTANTS
+API_VERSION = ''
+PROD_URL = ''
+STAG_URL = ''
+WEB_PROD_URL = ''
+WEB_STAG_URL = ''
+
+# APP CONSTANTS
+BRAND_NAME = ''
+
+# GOOGLE PLACES API & MAPBOX
+GOOGLE_PLACES_API_KEY = ''
+MAPBOX_ACCESS_TOKEN = ''
+
+# SENTRY
+SENTRY_DSN_PROD = ''
+SENTRY_DSN_STAG = ''
+
+# GOOGLE_SIGNIN_CLIENT_ID
+GOOGLE_SIGNIN_CLIENT_ID_STAG = ''
+GOOGLE_SIGNIN_CLIENT_ID_PROD = ''
+
+# ALGOLIA
+ALGOLIA_KEY_STAG = ''
+ALGOLIA_APP_ID_STAG = ''
+ALGOLIA_APP_ID_PROD = ''
+ALGOLIA_KEY_PROD = ''
+
+# GIPHY_API_KEY
+GIPHY_API_KEY_PROD = ''
+GIPHY_API_KEY_STAG = ''
+
+# ONE SIGNAL
+ONE_SIGNAL_STAG_APP_ID = ''
+ONE_SIGNAL_PROD_APP_ID = ''
+
+# GOOGLE TAG MANAGER ID
+GOOGLE_TAG_MANAGER_ID_STAG = ''
+GOOGLE_TAG_MANAGER_ID_PROD = ''
+
+# POSTHOG
+POSTHOG_KEY = ''
+
+# SUPABASE
+SUPABASE_URL_STAG = ''
+SUPABASE_ANON_KEY_STAG = ''
+SUPABASE_URL_PROD = ''
+SUPABASE_ANON_KEY_PROD = ''
+```
+
+### Step 2: Run Brand Configuration Script
+
+Execute the main configuration script with your brand name:
+
+```bash
+./scripts/configs.sh <brand_name>
+```
+
+**The script will prompt you for:**
+
+- Brand display name
+- Production URL (default: web.brand.com)
+- Staging URL (default: webstaging.brand.com)
+- Android package name (default: com.brand.app)
+- iOS bundle ID (default: com.brand.app)
+- Brand description
+
+**Theme Configuration:**
+
+- Primary font (default: Urbanist)
+- Secondary font (default: Hellix)
+- Primary color (default: #4B164C)
+- Secondary color (default: #DD88CF)
+
+**For staging configuration, run with brand name parameter:**
+
+```bash
+./scripts/copy_firebase_config_5.sh <brand_name_lowercase>
+./scripts/copy_ios_config_6.sh <brand_name_lowercase>
+```
+
+### Step 3: Dependencies and Code Generation
+
+**Clean and install dependencies:**
+
+```bash
+flutter clean && flutter pub get
+```
+
+**Install packages with Melos:**
+
+```bash
+flutter pub run melos bs
+```
+
+**Generate required code:**
+
+```bash
+flutter pub run build_runner build --delete-conflicting-outputs
+```
+
+### Step 3: Updating assets
+
+#### Images
+
+> It's important to replace the images with new ones of the exact same name, dimensions and format to avoid layout or performance issues.
+
+- Go to `assets/<brand_name>/images` and update brand specific assets:
+
+  - `banned_user.webp`
+  - `bg_subscription_gold.webp`
+  - `bg_subscription_premium.webp`
+  - `enable_location.webp`
+  - `female1.webp`
+  - `female2.webp`
+  - `female3.webp`
+  - `magicLink.webp`
+  - `landing_loading.webp`
+  - `logo.webp`
+  - `logo_on_white.webp`
+  - `male1.webp`
+  - `male2.webp`
+  - `male3.webp`
+  - `male4.webp`
+  - `onboarding_chat_1.png`
+  - `onboarding_chat_2.png`
+  - `onboarding_chat_3.png`
+  - `onboarding_discover_1.png`
+  - `onboarding_discover_2.png`
+  - `onboarding_discover_3.png`
+  - `onboarding_image.png`
+  - `onboarding_profile_1.png`
+  - `onboarding_profile_2.png`
+  - `onboarding_profile_3.png`
+  - `onboarding_welcome_1.png`
+  - `onboarding_welcome_2.png`
+  - `onboarding_welcome_3.png`
+  - `empty_image.webp`
+  - `background.webp`
+  - `logo_full.webp`
+
+#### Vectors
+
+> It's important to replace the vectors with new ones of the exact same name and format to avoid layout or performance issues.
+
+- Go to `assets/<brand_name>/vectors` and update brand specific assets:
+
+  - `donwload_android.svg.vec`
+  - `download_ios.svg.vec`
+  - `empty_chats.svg.vec`
+  - `empty_discover.svg.vec`
+  - `empty_gallery.svg.vec`
+  - `empty_match.svg.vec`
+  - `empty_matches.svg.vec`
+  - `empty_messages.svg.vec`
+  - `empty_notications.svg.vec`
+  - `error_bug.svg.vec`
+  - `ic_app_settings.svg.vec`
+  - `ic_attachment.svg.vec`
+  - `ic_billing.svg.vec`
+  - `ic_blog.svg.vec`
+  - `ic_calendar.svg.vec`
+  - `ic_camera.svg.vec`
+  - `ic_chat_active.svg.vec`
+  - `ic_chat_inactive.svg.vec`
+  - `ic_chat_thin.svg.vec`
+  - `ic_credit.svg.vec`
+  - `ic_dislinke.svg.vec`
+  - `ic_explore_active.svg.vec`
+  - `ic_explore_inactive.svg.vec`
+  - `ic_faq.svg.vec`
+  - `ic_filter.svg.vec`
+  - `ic_flower.svg.vec`
+  - `ic_friends.svg.vec`
+  - `ic_gender_female.svg.vec`
+  - `ic_gender_male.svg.vec`
+  - `ic_gif.svg.vec`
+  - `ic_heart_active.svg.vec`
+  - `ic_heart_inactive.svg.vec`
+  - `ic_height.svg.vec`
+  - `ic_help_center.svg.vec`
+  - `ic_incognito.svg.vec`
+  - `ic_info.svg.vec`
+  - `ic_instant_chat.svg.vec`
+  - `ic_language.svg.vec`
+  - `ic_link.svg.vec`
+  - `ic_location_request.svg.vec`
+  - `ic_logout.svg.vec`
+  - `ic_love.svg.vec`
+  - `ic_map_pin.svg.vec`
+  - `ic_map_pin_outline.svg.vec`
+  - `ic_megaphone.svg.vec`
+  - `ic_message.svg.vec`
+  - `ic_more.svg.vec`
+  - `ic_notification_active.svg.vec`
+  - `ic_notification_inactive.svg.vec`
+  - `ic_online_active.svg.vec`
+  - `ic_passport.svg.vec`
+  - `ic_photo.svg.vec`
+  - `ic_preferences.svg.vec`
+  - `ic_premium_search.svg.vec`
+  - `ic_privacy.svg.vec`
+  - `ic_profile_active.svg.vec`
+  - `ic_profile_inactive.svg.vec`
+  - `ic_religion.svg.vec`
+  - `ic_scale.svg.vec`
+  - `ic_search.svg.vec`
+  - `ic_security.svg.vec`
+  - `ic_send.svg.vec`
+  - `ic_settings.svg.vec`
+  - `ic_share.svg.vec`
+  - `ic_sub_gold.svg.vec`
+  - `ic_sub_purple.svg.vec`
+  - `ic_subs_star.svg.vec`
+  - `ic_terms.svg.vec`
+  - `ic_twitter.svg.vec`
+  - `ic_username.svg.vec`
+  - `ic_zap.svg.vec`
+  - `in_app_review.svg.vec`
+  - `missing_page.svg.vec`
+  - `missing_route.svg.vec`
+  - `no_location.svg.vec`
+  - `text_accent.svg.vec`
+  - `text_brush.svg.vec`
+  - `update_app_absract.svg.vec`
+  - `update_app_absract_2.svg.vec`
+  - `wheel.svg.vec`
+  - `wheel_success.svg.vec`
+  - `stopwatch.svg.vec`
+  - `cheers.svg.vec`
+  - `cigarette.svg.vec`
+  - `globe.svg.vec`
+  - `hands_praying.svg.vec`
+  - `heart.svg.vec`
+  - `location_pin.svg.vec`
+  - `person.svg.vec`
+  - `ruler.svg.vec`
+  - `scales.svg.vec`
+  - `translate.svg.vec`
+  - `ic_baby.svg.vec`
+  - `ic_globe.svg.vec`
+  - `ic_cigarette.svg.vec`
+  - `ic_nav_arrow.svg.vec`
+  - `ic_gender_search.svg.vec`
+  - `ic_city.svg.vec`
+  - `maintenance.svg.vec`
+
+### Step 5: Generate Splash Screen
+
+Create native splash screens for all platforms:
+
+```bash
+dart run flutter_native_splash:create
+```
+
+### Step 6: Generate Launcher Icons
+
+Create app icons for Android and iOS:
+
+```bash
+dart run flutter_launcher_icons:generate
+```

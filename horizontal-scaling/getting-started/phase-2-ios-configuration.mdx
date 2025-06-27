@@ -1,0 +1,128 @@
+---
+title: "iOS Configuration"
+description: "Configure Xcode settings, build configurations, and iOS entitlements"
+---
+
+## iOS Configuration
+
+### Step 3: Configure Xcode Settings
+
+- Create configurations in Xcode for debug, release, and profile
+
+![Create iOS schemes](/images/create-ios-schemes.png)
+
+- Create production-[brandname] and staging-[brandname] schemes in `ios/Runner.xcodeproj/xcshareddata/xcschemes`
+
+![Create iOS schemes](/images/xcschemes.png)
+
+### Step 4: Update iOS Build Settings
+
+#### 4a. Configure Product Bundle Identifiers
+
+- Select **Runner** in TARGETS
+- Navigate to **Build Settings** → **Packaging** → **Product Bundle Identifier**
+- Configure the bundle identifiers for each build configuration as shown:
+
+![Create iOS schemes](/images/packaging-configs.png)
+
+**Required Bundle ID Configurations:**
+
+- `Debug-production`: `com.[brandname].app`
+- `Debug-production-[brandname]`: `com.[brandname].app`
+- `Debug-staging`: `com.[brandname].app.staging`
+- `Debug-staging-[brandname]`: `com.[brandname].app.staging`
+- `Profile-production`: `com.[brandname].app`
+- `Profile-staging`: `com.[brandname].app.staging`
+- `Profile-staging-[brandname]`: `com.[brandname].app.staging`
+- `Release-production`: `com.[brandname].app`
+- `Release-production-[brandname]`: `com.[brandname].app`
+- `Release-staging`: `com.[brandname].app.staging`
+- `Release-staging-[brandname]`: `com.[brandname].app.staging`
+
+**Note:** Replace `[brandname]` with your actual brand name (e.g., `pinaflare` as shown in the example).
+
+#### 4b. Configure OneSignal Extension Packaging
+
+- Select **OneSignalNotificationServiceExtension** target
+- Update the same Bundle Identifier configurations in Build Settings
+- Ensure they match the main app bundle IDs with `.OneSignalNotificationServiceExtension` suffix
+
+![Create iOS schemes](/images/onesignal-packaging-configs.png)
+
+#### 4c. Create Code Signing Entitlements
+
+- Create brand-specific entitlement files in `ios/Runner/`
+- Files should be named: `Runner-Production-[Brandname].entitlements` and `Runner-Staging-[Brandname].entitlements`
+- Configure the entitlements with the following structure:
+
+![Create iOS schemes](/images/entitlements.png)
+
+**Entitlement File Content Example (`Runner-Production-Pinaflare.entitlements`):**
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>aps-environment</key>
+    <string>development</string>
+    <key>com.apple.developer.applesignin</key>
+    <array>
+        <string>Default</string>
+    </array>
+    <key>com.apple.developer.associated-domains</key>
+    <array>
+        <string>applinks:web.[brandname].com</string>
+    </array>
+    <key>com.apple.security.application-groups</key>
+    <array>
+        <string>group.com.[brandname].app.onesignal</string>
+    </array>
+</dict>
+</plist>
+```
+
+**Key Entitlements Explained:**
+
+- `aps-environment`: Push notification environment (development/production)
+- `com.apple.developer.applesignin`: Enables Sign in with Apple
+- `com.apple.developer.associated-domains`: Deep linking domains for your brand
+- `com.apple.security.application-groups`: App group for OneSignal notifications
+
+**Note:** Replace `[brandname]` with your actual brand name and update URLs accordingly.
+
+#### 4d. Update Code Signing Settings
+
+- Select **Runner** target
+- Navigate to **Build Settings** → **Signing** → **Code Signing Entitlements**
+- Configure the entitlement file paths for each build configuration as shown:
+
+![Create iOS schemes](/images/runner-signing-entitlements.png)
+
+**Required Code Signing Entitlements Configuration:**
+
+**Production Configurations:**
+
+- `Debug-production`: `Runner/Runner-Production.entitlements`
+- `Debug-production-jubley`: `Runner/Runner-Production.entitlements`
+- `Debug-production-[brandname]`: `Runner/Runner-Production-[Brandname].entitlements`
+- `Profile-production`: `Runner/Runner-Production.entitlements`
+- `Release-production`: `Runner/Runner-Production.entitlements`
+- `Release-production-jubley`: `Runner/Runner-Production.entitlements`
+- `Release-production-[brandname]`: `Runner/Runner-Production-[Brandname].entitlements`
+
+**Staging Configurations:**
+
+- `Debug-staging`: `Runner/Runner-Staging.entitlements`
+- `Debug-staging-jubley`: `Runner/Runner-Staging.entitlements`
+- `Profile-staging`: `Runner/Runner-Staging.entitlements`
+- `Profile-staging-jubley`: `Runner/Runner-Staging.entitlements`
+- `Profile-staging-[brandname]`: `Runner/Runner-Staging-[Brandname].entitlements`
+- `Release-staging`: `Runner/Runner-Staging.entitlements`
+- `Release-staging-jubley`: `Runner/Runner-Staging.entitlements`
+
+**Note:**
+
+- Replace `[brandname]` and `[Brandname]` with your actual brand name (e.g., `pinaflare` and `Pinaflare`)
+- Brand-specific configurations use brand-specific entitlement files
+- Generic configurations use the base entitlement files
