@@ -2,17 +2,112 @@
 title: "App Store"
 ---
 
-<iframe
-  src="https://drive.google.com/file/d/1Z_dmav_Qb1bXV7ZHMIPm4oL4iVXju4Ze/preview"
-  width="640"
-  height="480"
-  allow="autoplay"
-/>
+## Step 1: Create App Bundle ID in Apple Developer Portal
+
+Before creating your app in App Store Connect, you need to register your app's bundle identifier in the Apple Developer portal.
+
+<video
+  muted
+  loop
+  controls
+  playsInline
+  className="w-full aspect-video rounded-xl"
+  src="/videos/create-bundle-id.mov"
+></video>
+
+### 1. Access Apple Developer Portal
+
+1. Go to [developer.apple.com](https://developer.apple.com)
+2. Sign in with your Apple Developer account
+3. Navigate to **Account** → **Certificates, Identifiers & Profiles**
+
+### 2. Create App Identifier
+
+1. In the left sidebar, click **Identifiers**
+2. Click the **+** button to create a new identifier
+3. Select **App IDs** and click **Continue**
+4. Choose **App** as the type and click **Continue**
+
+### 3. Configure App ID Details
+
+1. **Description**: Enter a meaningful description for your app (e.g., "YourApp - Dating App")
+2. **Bundle ID**: Choose **Explicit** and enter your bundle identifier
+   - Format: `com.name.app` (e.g., `com.jubley.app`)
+   - This must match exactly what you use in your Xcode project
+3. **Capabilities**: Select any special capabilities your app needs:
+   - Push Notifications (commonly needed)
+   - App Groups (required for OneSignal rich notifications)
+   - Sign in with Apple (if using Apple Sign-In)
+   - In-App Purchase (if monetizing)
+   - Associated Domains (for deep linking)
+
+### 4. Register the Identifier
+
+1. Review your configuration
+2. Click **Continue**
+3. Click **Register** to create the App ID
+
+## Step 2: Create App in App Store Connect
+
+Now that you have registered your bundle ID, you can create the app listing in App Store Connect.
+
+<video
+  muted
+  loop
+  controls
+  playsInline
+  className="w-full aspect-video rounded-xl"
+  src="/videos/create-app.mov"
+></video>
+
+### 1. Access App Store Connect
+
+1. Go to [appstoreconnect.apple.com](https://appstoreconnect.apple.com)
+2. Sign in with your Apple Developer account
+3. Click **My Apps**
+
+### 2. Create New App
+
+1. Click the **+** button in the top left
+2. Select **New App**
+3. Fill in the required information:
+   - **Platforms**: Select iOS (and other platforms if applicable)
+   - **Name**: Your app's display name (can be changed later)
+   - **Primary Language**: Choose your primary language
+   - **Bundle ID**: Select the bundle ID you created in Step 1
+   - **SKU**: Create a unique identifier (e.g., your bundle ID or app name)
+   - **User Access**: Choose **Limited Access** or **Full Access**
+
+### 3. Complete App Information
+
+1. Click **Create** to create your app
+2. You'll be taken to the app's dashboard
+3. Complete the required sections:
+   - **App Information**: Verify bundle ID, category, content rights
+   - **Pricing and Availability**: Set your app's price and availability
+   - **App Privacy**: Complete privacy details and data collection info
+
+### 4. Prepare for Submission
+
+1. **App Store**: Add app description, keywords, screenshots, and app preview
+2. **General**: Verify app information and build details
+3. **App Review Information**: Provide contact info and demo account if needed
+
+### Important: Age Ratings Configuration
 
 Missed this information in the video but you need to do age ratings too.\
-Select "None" or "No" for all content ratings unless something genuinely applies (which for our dating app, it typically doesn’t).
+Select "None" or "No" for all content ratings unless something genuinely applies (which for our dating app, it typically doesn't).
 
 - Set the age rating to 17\+.
 - Confirm your selections before submission.
 
 ![image.png](/images/image.png)
+
+## Next Steps
+
+After completing both the bundle ID registration and App Store Connect setup:
+
+1. Update your Xcode project to use the registered bundle ID
+2. Configure provisioning profiles if needed
+3. Proceed with app development and testing
+4. Submit for App Store review when ready
