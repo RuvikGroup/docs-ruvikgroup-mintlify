@@ -1,0 +1,238 @@
+---
+title: "OneSignal Setup"
+description: "Push notifications setup steps in OneSignal for Android and iOS"
+---
+
+# Android Firebase credentials
+
+To send push notifications to Android devices through the Google Play Store, OneSignal requires Firebase Cloud Messaging (FCM) credentials. This guide walks you through generating the required Service Account JSON file and uploading it to your OneSignal app settings.
+
+For technical background, see [Google's Service Account documentation](https://cloud.google.com/iam/docs/service-account-overview).
+
+> **Note**
+> This guide is for developers integrating OneSignal with an Android mobile app distributed via the Google Play Store.
+>
+> - This guide should not be used for Web Push. See [Web push setup](/docs/web-push-setup).
+> - For Huawei apps distributed via the Huawei App Gallery, see [Huawei: Authorizing OneSignal](/docs/authorize-onesignal-to-send-huawei-push).
+
+---
+
+## Requirements
+
+- An Android app distributed via the Google Play Store
+- A [Firebase account (free)](https://firebase.google.com)
+- A [OneSignal account](https://onesignal.com)
+
+---
+
+## Setup
+
+### 1. Create or open your Firebase Project
+
+Go to the [Firebase console](https://console.firebase.google.com/).
+
+- If you don't have a project yet, click **Add project** and complete the setup.
+- If you already have a project, **select it**.
+
+### 2. Enable Firebase Cloud Messaging API v1
+
+#### Go to Project Settings
+
+In Firebase, click the **gear icon** next to **Project Overview > Project settings**.
+
+#### Go to Cloud Messaging
+
+Go to the **Cloud Messaging** tab.
+
+If **Firebase Cloud Messaging API (V1)** is **disabled**, click the **3-dot menu > Open in Cloud Console**.
+
+In the Google Cloud Console, click **Enable**. Wait a few minutes for the change to reflect in Firebase.
+
+### 3. Generate a Service Account JSON file
+
+#### Return to Project Settings > Service Accounts
+
+At the bottom, click **Generate new private key**.
+
+#### Confirm and generate key
+
+Confirm by clicking **Generate key** in the popup.
+
+> **Warning**
+> 🔒 This file contains sensitive credentials. Do not share it or check it into version control.
+
+#### Save the file
+
+Save the `.json` file in a secure location. You will need it shortly.
+
+> **Info**
+> Required Service Account permissions:
+>
+> - `cloudmessaging.messages.create`
+> - `firebase.projects.get`
+>
+> These are included by default. If you're using a custom Service Account, ensure it has:
+>
+> - `roles/firebasemessaging.admin`
+> - `roles/firebase.viewer`
+
+### 4. Upload your credentials to OneSignal
+
+#### Go to Android platform settings
+
+In your OneSignal dashboard, go to: **Settings > Push & In-App > Push Platforms > Google Android (FCM)**.
+
+Click **Activate**.
+
+#### Upload your credentials
+
+Upload the `.json` file under **Service Account JSON** by clicking **Choose file**.
+
+> **Warning**
+> If prompted, select **Firebase Cloud Messaging API (V1)** from the dropdown.
+>
+> To verify you're using the correct Firebase project, match the **Sender ID** in Firebase (`Cloud Messaging > Sender ID`) with the one shown in your OneSignal settings.
+
+#### Save and continue
+
+#### Choose your SDK
+
+Select the SDK you are using and click **Save & Continue**.
+
+#### Add the OneSignal App ID to your code
+
+Continue following the [Mobile SDK setup](/docs/mobile-sdk-setup) and add this OneSignal App ID to your code.
+
+> **Success**
+> You've successfully connected your OneSignal app to Firebase Cloud Messaging (V1).
+>
+> Next, complete [Mobile SDK setup](/docs/mobile-sdk-setup) or go to [Mobile push setup](/docs/mobile-push-setup) for platform-specific instructions.
+
+---
+
+## FAQ
+
+### Error: "This configuration is for a different Firebase Project..."
+
+This error occurs when the uploaded JSON file belongs to a different Firebase project (i.e., different Sender ID).
+
+**Solution**: Use the original Firebase project's JSON file. If unavailable, contact `support@onesignal.com` with your App ID. Switching projects resets push tokens—your users must reopen the app to get push again.
+
+### Can I change my Sender ID?
+
+No. The Sender ID is locked once your app surpasses 100 Android users to prevent accidental invalidation of push tokens.
+
+If necessary, contact `support@onesignal.com` with your App ID for assistance.
+
+### Do I need to update my code when switching to FCM V1?
+
+No app or SDK changes are required—this is a dashboard-only update.
+
+### What is the deadline for switching to FCM v1?
+
+Google began deprecating legacy FCM APIs in **July 2024**. Migration is strongly recommended. See [Google's announcement](https://firebase.google.com/docs/cloud-messaging/migrate-v1).
+
+### Why don't I see a Sender ID in OneSignal?
+
+If your Firebase server key looks like `AIz...`, you're likely using an outdated Google Cloud Messaging (GCM) setup. Create a new Firebase project and upload a Service Account JSON file.
+
+### How can I check which apps are still using the Legacy API?
+
+Use the [View apps](/reference/view-apps) API and check for:
+
+- `"gcm_key"` → using Legacy, needs update
+- `"fcm_v1_service_account_json"` → using V1 ✅
+- Neither → app does not use Android push
+
+---
+
+# iOS p8 token-based connection to APNs
+
+To send push notifications to iOS apps, an authenticated connection to Apple Push Notification Services (APNs) is required. You can authenticate using a **token-based (.p8 key)** or a **[certificate-based (.p12 file)](/docs/ios-p12-generate-certificates)** method — but only one is necessary.
+
+This guide will walk you through setting up a **token-based .p8 key**, the recommended approach.
+
+---
+
+## Requirements
+
+Make sure you have the following before starting:
+
+- An iOS mobile app.
+- A [**Paid Apple Developer Account**](https://developer.apple.com/) with [**Admin** access](https://appstoreconnect.apple.com/access/users).
+- A [**OneSignal Account**](https://onesignal.com).
+- A mac with Xcode 14+.
+- An Xcode project with **Push Notification capability enabled**.
+
+---
+
+## Steps
+
+### Generate your .p8 key in Apple Developer Account
+
+1. Log into your [Apple Developer Account](https://developer.apple.com/).
+2. Go to **Certificates, Identifiers & Profiles > [Keys](https://developer.apple.com/account/resources/authkeys)**.
+3. Click the **blue plus (+)** icon.
+   - If you don't see it, contact your Admin for access.
+
+<Frame>
+  <img src="https://mintlify.s3.us-west-1.amazonaws.com/onesignal/images/docs/1e2ff6e-Apple_Key_Page.jpg" />
+</Frame>
+
+4. Select **Apple Push Notifications service (APNs)**.
+5. When configuring the key, ensure that **Sandbox & Production** is selected:
+
+<Frame>
+  <img src="https://mintlify.s3.us-west-1.amazonaws.com/onesignal/images/docs/p8-sandboxandproductionkey.png" />
+</Frame>
+
+6. Enter a name for the key and click **Continue**, then **Register**.
+
+<Frame>
+  <img src="https://mintlify.s3.us-west-1.amazonaws.com/onesignal/images/docs/312d551-Apple_Key_Page_-_Register.jpg" />
+</Frame>
+
+7. **Download your .p8 key** and store it securely. You won't be able to download it again.
+
+> **Warning**
+> If you need to create a new .p8 and already have two, you **must first revoke one of the existing keys** — and it will no longer be usable.
+
+---
+
+### Upload the .p8 key to OneSignal
+
+1. Navigate to **Settings > Push & In-App > Apple iOS (APNs) Settings** in your OneSignal dashboard.
+
+<Frame caption="OneSignal dashboard push configuration page.">
+  <img src="https://mintlify.s3.us-west-1.amazonaws.com/onesignal/images/docs/aae4b280221b1d818a1cf5f9d9cba65f1a776889bd57cdc6eed53ce0be569721-Screenshot_2025-04-21_at_4.07.48_PM.png" />
+</Frame>
+
+2. Choose **.p8 Auth Key (Recommended)** as the authentication method.
+
+<Frame caption="If updating from a p12 or another p8, you'll have the option to 'update authentication'">
+  <img src="https://mintlify.s3.us-west-1.amazonaws.com/onesignal/images/docs/e1db934476e229d39c456b9cb8c38c73c8176a6b8d0a70d7ead67687fa3c1929-01884bd-Screenshot_2024-05-07_at_1.58.15_PM.png" />
+</Frame>
+
+Provide the following:
+
+- **`.p8 File`** – The private key file you downloaded from your Apple Developer account.
+- **`Key ID`** – Located in the [Keys section](https://developer.apple.com/account/resources/authkeys) of your Apple Developer account. Make sure it matches the downloaded .p8 file.
+- **`Team ID`** – Found in the top-right corner of your [Apple Developer account](https://developer.apple.com/account/).
+- **`App Bundle ID`** – You can find this:
+  - In the [Identifiers section](https://developer.apple.com/account/resources/identifiers/list), or
+  - In **Xcode > Main App Target > Signing & Capabilities**
+
+<Frame caption="Finding your .p8 key details">
+  <img src="https://mintlify.s3.us-west-1.amazonaws.com/onesignal/images/docs/c8d0207041e7c277f7e4ca49a3f6100280ddcbf970fce9b720fddfbda6683bb6-p8.png" />
+</Frame>
+
+<Frame caption="Finding your Bundle ID on Xcode">
+  <img src="https://mintlify.s3.us-west-1.amazonaws.com/onesignal/images/docs/35a1fd8940c4964156b9b0b83fbc41772189ae3d2eb29f80318137887344cf4c-ea1f341-Screenshot_2024-06-18_at_3.25.41_PM.png" />
+</Frame>
+
+Click **Save & Continue** when done.
+
+> **Success**
+> You've successfully set up **APNs authentication using a .p8 key** in OneSignal.
+>
+> Your iOS app is now ready to send and receive push notifications! 🎉
