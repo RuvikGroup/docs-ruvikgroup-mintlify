@@ -17,3 +17,12 @@ description: "Create Android signing keys and configure signing properties"
 - Create a new file from `android/app/key.properties` template with the passwords and alias
 - Update `build.gradle` to use your new file instead of `key.properties`
   ![Android Asset Links](/images/build-gradle-key-props.png)
+
+### Step 18: Generate signing key hashes for Facebook Developers
+
+- Go to `android/app` folder
+- For each brand execute the keytool & openssl command:
+
+```bash
+keytool -exportcert -alias my-key-alias -keystore android/app/brand.keystore -storepass STORE_PASSWORD -keypass KEY_PASSWORD | openssl sha1 -binary | openssl base64
+```
