@@ -24,5 +24,5 @@ description: "Create Android signing keys and configure signing properties"
 - For each brand execute the keytool & openssl command:
 
 ```bash
-keytool -exportcert -alias my-key-alias -keystore android/app/brand.keystore -storepass STORE_PASSWORD -keypass KEY_PASSWORD | openssl sha1 -binary | openssl base64
+keytool -exportcert -alias my-key-alias -keystore android/app/brand.keystore -storepass STORE_PASSWORD | openssl sha1 -binary | openssl base64
 ```
